@@ -1,48 +1,76 @@
 # Ruta Toche · Turismo en Cúcuta
 
-Prototipo funcional (fase 1) de la app de turismo de Cúcuta, con Toche como guía.
+Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con Toche como guía.
 
-- Un solo archivo: `index.html`. Sin instalar nada ni compilar.
-- En el celular se ve a pantalla completa; en el computador, dentro de un marco de teléfono.
+**Ver en línea:** https://neiber170205-rgb.github.io/mockup-turismo/
 
-## Cómo verlo
+- En el celular se ve a pantalla completa. En el computador aparece dentro de un marco de teléfono, con un panel para saltar entre pantallas y simular la ubicación.
+- No hay que instalar ni compilar nada: es HTML, CSS y JavaScript.
 
-- Abre `index.html` en el navegador (doble clic).
-- O publícalo con GitHub Pages: *Settings → Pages → Branch: main*.
-- La cámara y la ubicación solo funcionan con `https` (GitHub Pages sirve).
+## Qué funciona
 
-## Qué incluye
+- **Mapa real** de OpenStreetMap con tu ubicación por GPS, filtros por tipo de turismo y buscador.
+- **Cómo llegar**: rutas reales a pie (o en carro si el lugar está lejos), con indicaciones en español, voz de Toche, recálculo si te sales de la ruta y aviso al llegar.
+- **Simular recorrido**: Toche camina la ruta por ti, para probar la llegada desde cualquier lugar.
+- **Llegada a un punto turístico**: cuando estás a pocos metros, vibra, Toche lo anuncia y se abre su historia con el comparador antes/hoy.
+- **Estampas**: en el punto (o con un plato típico) te tomas una foto y ganas la estampa. Se guardan en el navegador.
+- **Rutas** por tipo de turismo, con paradas numeradas en el mapa y progreso.
+- **Comida**: restaurantes cercanos tomados de OpenStreetMap.
+- **Ayuda**: botón para llamar al 123, hospital y CAI más cercanos (OpenStreetMap), líneas oficiales y compartir ubicación.
+- **Accesibilidad**: guía por voz, alto contraste, tres tamaños de letra, paleta para daltonismo con nombres siempre visibles, velocidad de voz, vibración, compatible con lectores de pantalla y teclado. Respeta "reducir movimiento" y la zona de la cámara del celular.
+- **Hablar con Toche** (botón central): comandos de voz como "llévame al Templo Histórico", "¿dónde estoy?" o "ayuda". Si el navegador no entiende voz, muestra un menú.
 
-- Bienvenida: elegir modo visual, alto contraste o guía por voz.
-- Inicio con menú de 4 botones grandes.
-- Mapa tipo Waze: filtros, buscador, comandos de voz, ruta animada y navegación simulada.
-- Rutas por tipo de turismo con progreso.
-- Punto turístico: comparador antes/hoy, historia narrada y foto para ganar la estampa.
-- Cámara real (o simulada si no hay permiso) y animación de recompensa.
-- Álbum de estampas (se guarda en el navegador).
-- Emergencias: 123, hospital, CAI, números útiles y compartir ubicación.
-- Accesibilidad: voz de Toche, alto contraste, tamaño de letra, ajuste para daltonismo.
-- Respeta la zona de la cámara/notch con `env(safe-area-inset-*)`.
-- Respeta "reducir movimiento" del sistema.
+## Ubicación
+
+- La app pide permiso de ubicación al tocar **Empezar**.
+- Si no das permiso, si el GPS falla o si estás lejos de Cúcuta, usa una **ubicación de demostración** en el centro (aparece la etiqueta *Demo*). Se cambia tocando el nombre del lugar arriba en Inicio.
+- El GPS solo funciona con `https` (GitHub Pages) o en `localhost`.
+
+## Datos y servicios abiertos
+
+| Uso | Servicio |
+|---|---|
+| Mapa | Teselas de [CARTO](https://carto.com/attributions) con datos de [OpenStreetMap](https://www.openstreetmap.org/copyright). Si fallan, usa las de OpenStreetMap. |
+| Rutas | OSRM en los servidores de [FOSSGIS](https://routing.openstreetmap.de/) (perfiles a pie y en carro). |
+| Hospitales, CAI, restaurantes y lugares sin coordenadas | [Overpass API](https://overpass-api.de/) |
+| Buscador y nombre del barrio | [Nominatim](https://nominatim.org/) |
+| Librería de mapa | [Leaflet 1.9.4](https://leafletjs.com/) (incluida en `vendor/`, licencia BSD-2) |
+
+Son servicios gratuitos con límites de uso, buenos para un prototipo. Para producción conviene un proveedor con contrato o servidores propios. Las respuestas se guardan un tiempo en el navegador para no repetir consultas.
+
+## Coordenadas de los puntos
+
+Están en `js/data.js`, cada una con su fuente:
+
+- **Verificadas**: Catedral de San José, Torre del Reloj, Biblioteca Julio Pérez Ferrero, Templo Histórico, Puente Simón Bolívar.
+- **Aproximadas** (se corrigen solas si OpenStreetMap tiene el lugar): Parque Santander, Quinta Teresa, Casa Natal de Santander.
+- **Se buscan en OpenStreetMap al abrir la app**: Malecón y Monumento a Cristo Rey. Si no se encuentran, no aparecen en el mapa.
 
 ## Agregar fotos reales
 
-Pon las fotos en la carpeta `img/` con estos nombres y aparecen solas:
+Pon las fotos en `img/` con estos nombres y reemplazan solas a la ilustración:
 
-| Archivo | Dónde se ve |
-|---|---|
-| `img/templo-antes.jpg`, `img/templo-hoy.jpg` | Templo Histórico |
-| `img/parque-antes.jpg`, `img/parque-hoy.jpg` | Parque Santander |
-| `img/catedral-hoy.jpg`, `img/torre-hoy.jpg`, … | Cada punto (`<id>-antes.jpg` / `<id>-hoy.jpg`) |
-| `img/ruta-historica.jpg`, `img/ruta-sabores.jpg`, … | Portada de cada ruta |
-
-- IDs de puntos: `templo`, `parque`, `catedral`, `torre`, `quinta`, `comida`, `malecon`.
-- IDs de rutas: `historica`, `independencia`, `sabores`, `cultura`, `fe`, `verde`.
+- `img/<id>-hoy.jpg` y `img/<id>-antes.jpg`
+- IDs: `templo`, `parque`, `catedral`, `torre`, `quinta`, `biblioteca`, `malecon`, `casa`, `puente`, `cristo`.
 - Si usas fotos de Wikimedia Commons, da crédito al autor según la licencia.
+
+## Archivos
+
+```
+index.html        Pantallas y botones
+css/app.css       Diseño v2 (colores de Cúcuta, alto contraste, animaciones)
+js/data.js        Lugares, rutas, estampas y líneas de emergencia
+js/art.js         Toche, ilustraciones, estampas y pines del mapa (SVG)
+js/app.js         Lógica: navegación, mapa, GPS, rutas, voz, cámara, estampas
+vendor/leaflet/   Librería del mapa
+img/              Fotos reales opcionales
+```
+
+Para probarlo en tu computador: `python3 -m http.server` dentro de la carpeta y abre `http://localhost:8000`.
 
 ## Pendiente
 
-- Validar textos de historia con fuentes oficiales (Torre del Reloj y Quinta Teresa están vacíos a propósito).
-- Logos oficiales de las entidades de emergencia: solo con permiso de cada una (hay espacios marcados `LOGO`).
-- Las posiciones del mapa son ilustrativas; en desarrollo se cambia por un mapa real.
+- Validar los textos de historia con fuentes oficiales.
+- Logos de las entidades de emergencia: solo con permiso de cada una (hay espacios marcados `LOGO`).
+- Fotos reales de antes y hoy.
 - Fase 2: taxis y rutas de bus.

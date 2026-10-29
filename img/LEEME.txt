@@ -1,1 +1,2 @@
-Coloca aquí las fotos reales (ver README).
+Coloca aquí las fotos reales con el nombre <id>-hoy.jpg o <id>-antes.jpg.
+IDs: templo, parque, catedral, torre, quinta, biblioteca, malecon, casa, puente, cristo.
