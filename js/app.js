@@ -132,7 +132,12 @@
     clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('show'); }, ms || 2800);
   }
   function vibrate(p) { if (S.vibrar && navigator.vibrate) { try { navigator.vibrate(p); } catch (e) {} } }
-  $$('[data-toche]').forEach(function (el) { el.innerHTML = ART.toche(+el.getAttribute('data-toche'), el.getAttribute('data-variant') === 'happy'); });
+  /* Toche animado (js/toche.js): insignias, bienvenida y recompensa */
+  var TOCHE = window.RT_TOCHE || null;
+  if (TOCHE) TOCHE.mountAll(document);
+  var welcomeToche = TOCHE ? TOCHE.mount($('#welcome-toche'), { view: 'scene' }) : null, welcomeFlown = false;
+  function tocheOf(sel) { var el = typeof sel === 'string' ? $(sel) : sel; return el && el.__toche ? el.__toche : null; }
+  function tocheChirp(sel, ms) { var t = tocheOf(sel); if (t && !app.classList.contains('speaking')) t.chirp(ms || 1200); }
 
   /* =========================================================
      Voz: lectura (síntesis) y comandos (reconocimiento)
@@ -167,11 +172,11 @@
     if (prev && prev.onstop) prev.onstop();
     var parts = opts.parts || splitSentences(text), i = 0;
     if (opts.banner !== false) { $('#voice-text').textContent = text.length > 96 ? text.slice(0, 94) + '…' : text; app.classList.add('banner'); }
-    app.classList.add('speaking');
+    app.classList.add('speaking'); if (TOCHE) TOCHE.setSpeaking(true);
     function finish() {
       if (my !== speakToken) return;
       speakOpts = null;
-      app.classList.remove('speaking', 'banner');
+      app.classList.remove('speaking', 'banner'); if (TOCHE) TOCHE.setSpeaking(false);
       if (opts.onend) opts.onend();
     }
     function next() {
@@ -193,7 +198,7 @@
     try { if (synth) synth.cancel(); } catch (e) {}
     var prev = speakOpts; speakOpts = null;
     if (prev && prev.onstop) prev.onstop();
-    app.classList.remove('speaking', 'banner');
+    app.classList.remove('speaking', 'banner'); if (TOCHE) TOCHE.setSpeaking(false);
   }
   app.addEventListener('focusin', function (e) {
     if (!S.voz) return;
@@ -217,12 +222,12 @@
         if (e.error === 'not-allowed' || e.error === 'service-not-allowed') toast('Permite el micrófono para hablar con Toche');
         else if (e.error !== 'aborted') toast('No te escuché bien. Intenta de nuevo.');
       };
-      rec.onend = function () { btn.classList.remove('listening'); rec = null; };
-      rec.start();
+      rec.onend = function () { btn.classList.remove('listening'); rec = null; if (TOCHE) TOCHE.setListening(false); };
+      rec.start(); if (TOCHE) TOCHE.setListening(true);
       return true;
     } catch (e) { btn.classList.remove('listening'); rec = null; return false; }
   }
-  function stopListen() { if (rec) { try { rec.abort(); } catch (e) {} } rec = null; $$('.listening').forEach(function (b) { b.classList.remove('listening'); }); }
+  function stopListen() { if (rec) { try { rec.abort(); } catch (e) {} } rec = null; $$('.listening').forEach(function (b) { b.classList.remove('listening'); }); if (TOCHE) TOCHE.setListening(false); }
 
   /* =========================================================
      Pantallas e historial
@@ -319,7 +324,7 @@
     if (el.id === 'reward') { closeReward(); return true; }
     closeOverlay(el); return true;
   }
-  function openModal(html) { $('#modal-body').innerHTML = html; openOverlay($('#modal')); }
+  function openModal(html) { $('#modal-body').innerHTML = html; if (TOCHE) TOCHE.mountAll($('#modal-body')); openOverlay($('#modal')); }
   function closeModal() { closeOverlay($('#modal')); }
   $('#modal').addEventListener('click', function (e) { if (e.target.closest('[data-close-modal]')) closeModal(); });
   document.addEventListener('keydown', function (e) {
@@ -1243,7 +1248,7 @@
     $('#nav-eta').textContent = '— min';
     $('#nav-sub').textContent = it.name;
     $('#nav-bar').style.width = '0';
-    $('#nav-say').textContent = '¡Vamos! Sigue la línea roja.';
+    navSay('¡Vamos! Sigue la línea roja.');
     stopSim();
     setFollowing(true);
     map.setView(ll(pos), nav.profile === 'car' ? 16 : 17, { animate: true });
@@ -1277,6 +1282,7 @@
     measureNav();
   }
   function destName(n) { return n.it.type === 'place' ? n.it.place.name : n.it.name; }
+  function navSay(text) { $('#nav-say').textContent = text; tocheChirp('.nav-bubble .toche-badge', 1400); }
   function speakNav(text) { if (!nav || nav.muted) return; speak(text, { force: true, banner: false }); }
   function announceStart() {
     var n = nav; if (!n || !n.route) return;
@@ -1326,8 +1332,8 @@
       if (!n.said[key + 'f'] && distTo > 80 && st.type !== 'arrive') { n.said[key + 'f'] = 1; speakNav('En ' + sayDist(distTo) + ', ' + lcFirst(stepText(st, destName(n))) + '.'); }
       if (!n.said[key + 'n'] && distTo <= (n.profile === 'car' ? 70 : 30) && st.type !== 'arrive') { n.said[key + 'n'] = 1; n.said[key + 'f'] = 1; speakNav('Ahora, ' + lcFirst(stepText(st, destName(n))) + '.'); vibrate(60); }
     }
-    if (!n.half && along / total > 0.5) { n.half = true; $('#nav-say').textContent = '¡Vamos bien! Llegamos en ' + fmtMin(leftSec) + '.'; }
-    if (!n.near && remain < 150) { n.near = true; $('#nav-say').textContent = '¡Ya casi llegamos!'; }
+    if (!n.half && along / total > 0.5) { n.half = true; navSay('¡Vamos bien! Llegamos en ' + fmtMin(leftSec) + '.'); }
+    if (!n.near && remain < 150) { n.near = true; navSay('¡Ya casi llegamos!'); }
   }
   function arrive() {
     var n = nav; if (!n || n.done) return;
@@ -1424,7 +1430,10 @@
     go('inicio', { tab: true });
     bootLocation();
   });
-  onEnter.bienvenida = syncModeUI;
+  onEnter.bienvenida = function () {
+    syncModeUI();
+    if (welcomeToche && !welcomeFlown) { welcomeFlown = true; welcomeToche.flyIn({ from: -1, bounds: app }); }
+  };
 
   /* =========================================================
      Inicio
@@ -1436,7 +1445,13 @@
     $('#home-ring-text').textContent = n + '/' + N;
     $('#home-count').textContent = n + ' de ' + N + ' estampas';
   }
+  var lastSuggest = '';
   function renderSuggestion() {
+    renderSuggestionText();
+    var txt = $('#suggest-text').textContent;
+    if (txt !== lastSuggest) { lastSuggest = txt; tocheChirp('.toche-say .toche-badge', 1300); }
+  }
+  function renderSuggestionText() {
     var el = $('#suggest-text'), btn = $('#btn-take-me');
     if (!pos) {
       el.innerHTML = gps.state === 'asking' ? '<b>Buscando tu ubicación…</b> Un momento.' : '<b>Activa tu ubicación</b> y te muestro lo que hay cerca.';
@@ -1788,6 +1803,8 @@
     var ov = $('#reward');
     ov.setAttribute('data-stamp', st.id);
     openOverlay(ov);
+    var rt = tocheOf('.rw-toche');
+    if (rt) rt.flyIn({ from: 1, bounds: ov, then: function () { rt.celebrate(); } });
     setTimeout(function () { $('#rw-bar').style.width = Math.round(n / N * 100) + '%'; }, 700);
     confetti();
     vibrate([80, 60, 80, 60, 160]);
@@ -1795,6 +1812,7 @@
   }
   function closeReward() {
     closeOverlay($('#reward'));
+    var rt = tocheOf('.rw-toche'); if (rt) rt.reset();
     $('#confetti').innerHTML = '';
     if (curId() === 'punto') renderPunto();
     if (pendingBadge) { pendingBadge = false; setTimeout(function () { toast('¡Ganaste la insignia Explorador del Centro!', 4200); speak('¡Ganaste la insignia Explorador del Centro!'); }, 400); }
@@ -2025,7 +2043,7 @@
   function openCommandSheet() {
     var cmds = [['mapa', 'Explorar el mapa', 'map'], ['llevame al lugar mas cercano', 'Llévame al lugar más cercano', 'nav'], ['rutas', 'Ver las rutas', 'flag'],
       ['pasaporte', 'Mi pasaporte', 'award'], ['donde estoy', '¿Dónde estoy?', 'pin'], ['ayuda', 'Ayuda y emergencias', 'help']];
-    openModal('<div class="m-head"><span class="toche-badge gold" style="width:48px;height:48px;border-radius:24px">' + ART.toche(42) + '</span><h2 class="t-h2" id="modal-title" tabindex="-1">¿Qué quieres hacer?</h2></div>' +
+    openModal('<div class="m-head"><span class="toche-badge gold" style="width:48px;height:48px;border-radius:24px" data-toche="bust"></span><h2 class="t-h2" id="modal-title" tabindex="-1">¿Qué quieres hacer?</h2></div>' +
       '<p class="m-text">Este navegador no entiende comandos de voz. Elige una opción:</p>' +
       '<div class="m-list">' + cmds.map(function (c) { return '<button type="button" class="m-item" data-m="cmd" data-cmd="' + c[0] + '"><span class="m-ic">' + ic(c[2]) + '</span><span class="grow"><b>' + c[1] + '</b></span>' + ic('chev-r', 'chev') + '</button>'; }).join('') + '</div>');
   }

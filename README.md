@@ -19,6 +19,11 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 - **Ayuda**: botón para llamar al 123, hospital y CAI más cercanos (OpenStreetMap), líneas oficiales y compartir ubicación.
 - **Accesibilidad**: guía por voz, alto contraste, tres tamaños de letra, paleta para daltonismo con nombres siempre visibles, velocidad de voz, vibración, compatible con lectores de pantalla y teclado. Respeta "reducir movimiento" y la zona de la cámara del celular.
 - **Hablar con Toche** (botón central): comandos de voz como "llévame al Templo Histórico", "¿dónde estoy?" o "ayuda". Si el navegador no entiende voz, muestra un menú.
+- **Toche animado**: el toche real (*Icterus chrysater*), hecho solo con código. Respira, parpadea, mueve la cabeza a saltos, busca con el pico, sacude la cola y mueve el pico cuando la app habla.
+  - Bienvenida: llega volando y se posa en la rama.
+  - Inicio, navegación y menú de voz: su cabeza en la insignia, que habla con cada sugerencia.
+  - Nueva estampa: vuela hasta la estampa, se posa en el borde y celebra.
+  - Con "reducir movimiento" no vuela: se queda posado.
 
 ## Ubicación
 
@@ -60,7 +65,8 @@ Pon las fotos en `img/` con estos nombres y reemplazan solas a la ilustración:
 index.html        Pantallas y botones
 css/app.css       Diseño v2 (colores de Cúcuta, alto contraste, animaciones)
 js/data.js        Lugares, rutas, estampas y líneas de emergencia
-js/art.js         Toche, ilustraciones, estampas y pines del mapa (SVG)
+js/art.js         Ilustraciones, estampas y pines del mapa (SVG)
+js/toche.js       Toche animado: silueta con cuello que se dobla, resortes, aleteo y vuelo
 js/app.js         Lógica: navegación, mapa, GPS, rutas, voz, cámara, estampas
 vendor/leaflet/   Librería del mapa
 img/              Fotos reales opcionales

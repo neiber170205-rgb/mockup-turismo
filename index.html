@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="css/app.css?v=2.0">
+<link rel="stylesheet" href="css/app.css?v=2.1">
 </head>
 <body>
 
@@ -69,7 +69,7 @@
 
 <div class="stage">
   <aside class="panel" aria-label="Panel de demostración">
-    <div class="panel-brand"><span class="toche-badge" style="width:64px;height:64px;background:#C8102E" data-toche="56"></span><h1>Ruta Toche</h1></div>
+    <div class="panel-brand"><span class="toche-badge" style="width:64px;height:64px;background:#C8102E" data-toche="bust"></span><h1>Ruta Toche</h1></div>
     <p>Prototipo funcional de la app de turismo de Cúcuta · Fase 1 · Diseño v2.</p>
     <ul>
       <li>Mapa real de OpenStreetMap con tu GPS.</li>
@@ -136,19 +136,7 @@
               <path d="M150 293 C 146 284, 150 276, 160 274" stroke="#3B2A20" stroke-width="4"/>
               <path d="M262 290 C 268 282, 278 280, 286 284" stroke="#3B2A20" stroke-width="4"/>
             </g>
-            <g transform="translate(86 120) scale(1.9)">
-              <g class="bob">
-                <path d="M46 56 L10 20 L16 15 L54 50 Z" fill="#1C1917"/>
-                <path d="M64 77 L67 92 M74 76 L76 92" stroke="#2F2A26" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M40 56 Q58 44 82 48 Q96 54 94 66 Q84 80 60 79 Q44 77 38 67 Z" fill="#F5A300"/>
-                <circle cx="88" cy="50" r="12" fill="#F5A300"/>
-                <path d="M85 46 Q93 43 99 51 Q98 66 87 73 Q78 73 75 65 Q83 58 85 46 Z" fill="#1C1917"/>
-                <path d="M42 56 Q60 46 77 52 Q74 64 56 67 Q45 66 40 61 Z" fill="#1C1917"/>
-                <path d="M66 49 Q74 48 79 53 Q72 56 65 54 Z" fill="#F5A300"/>
-                <g class="blink"><circle cx="90" cy="48.5" r="3" fill="#4A4A4A"/><circle cx="90" cy="48.5" r="2" fill="#000"/><circle cx="90.7" cy="47.8" r="0.7" fill="#FFF"/></g>
-                <path d="M97 50 L115 57 L97 60 Z" fill="#A7AFB7"/>
-              </g>
-            </g>
+            <g id="welcome-toche" transform="translate(32.9 97.75) scale(1.25)"></g>
           </svg>
           <div class="welcome-brand">
             <p class="wordmark">Ruta Toche</p>
@@ -195,7 +183,7 @@
             <p class="muted">¿Qué quieres descubrir hoy?</p>
           </div>
           <section class="toche-say rise" aria-label="Sugerencia de Toche">
-            <span class="toche-badge gold" data-toche="54"></span>
+            <span class="toche-badge gold" data-toche="bust"></span>
             <div class="say-bubble">
               <p id="suggest-text"><b>Buscando lugares cerca de ti…</b></p>
               <button type="button" class="btn btn-primary btn-sm" id="btn-take-me">Llévame <svg class="ic ic-sm"><use href="#i-arrow-r"/></svg></button>
@@ -281,7 +269,7 @@
             </section>
             <button type="button" class="sos sos-sm" data-go="ayuda" aria-label="SOS: ayuda y emergencias">SOS</button>
             <div class="nav-bubble" id="nav-bubble">
-              <span class="toche-badge gold" data-toche="36"></span>
+              <span class="toche-badge gold" data-toche="bust"></span>
               <span id="nav-say">¡Vamos! Sigue la línea roja.</span>
               <span class="wave wave-red" aria-hidden="true"><i></i><i></i><i></i></span>
             </div>
@@ -456,7 +444,7 @@
         </svg>
         <button type="button" class="icon-btn glass-light float-tl" aria-label="Cerrar" id="rw-close"><svg class="ic"><use href="#i-x"/></svg></button>
         <div class="rw-stamp-wrap"><svg class="rw-stamp" id="rw-stamp" viewBox="0 0 220 220" role="img" aria-label="Estampa"></svg></div>
-        <span class="toche-badge rw-toche" data-toche="98" data-variant="happy"></span>
+        <div class="rw-toche" data-toche="full" data-facing="-1" aria-hidden="true"></div>
         <div class="rw-text">
           <h2 class="t-display" id="rw-title">¡Nueva estampa!</h2>
           <p id="rw-name">Lugar</p>
@@ -484,8 +472,9 @@
 </div>
 
 <script src="vendor/leaflet/leaflet.js"></script>
-<script src="js/data.js?v=2.0"></script>
-<script src="js/art.js?v=2.0"></script>
-<script src="js/app.js?v=2.0"></script>
+<script src="js/data.js?v=2.1"></script>
+<script src="js/art.js?v=2.1"></script>
+<script src="js/toche.js?v=2.1"></script>
+<script src="js/app.js?v=2.1"></script>
 </body>
 </html>

@@ -10,23 +10,6 @@ window.RT_ART = (function () {
     return '<use href="#i-' + icon + '" width="' + (size || 24) + '" height="' + (size || 24) + '"/>';
   }
 
-  /* ---------- Toche (versión esbelta) ---------- */
-  function toche(size, happy) {
-    var wing = happy
-      ? '<g class="t-wing-up"><path d="M46 56 Q46 30 64 16 Q70 34 76 54 Q60 62 46 56 Z" fill="#1C1917"/><path d="M62 24 Q68 22 70 30 Q66 32 62 30 Z" fill="#F5A300"/></g>'
-      : '<g class="t-wing"><path d="M42 56 Q60 46 77 52 Q74 64 56 67 Q45 66 40 61 Z" fill="#1C1917"/><path d="M66 49 Q74 48 79 53 Q72 56 65 54 Z" fill="#F5A300"/></g>';
-    return '<svg class="toche' + (happy ? ' happy' : '') + '" viewBox="0 0 120 120" width="' + size + '" height="' + size + '" aria-hidden="true" focusable="false"><g class="t-all">' +
-      '<path d="M46 56 L10 20 L16 15 L54 50 Z" fill="#1C1917"/>' +
-      '<path d="M64 77 L67 92 M74 76 L76 92" stroke="#2F2A26" stroke-width="3" stroke-linecap="round"/>' +
-      '<path d="M40 56 Q58 44 82 48 Q96 54 94 66 Q84 80 60 79 Q44 77 38 67 Z" fill="#F5A300"/>' +
-      '<circle cx="88" cy="50" r="12" fill="#F5A300"/>' +
-      '<path d="M85 46 Q93 43 99 51 Q98 66 87 73 Q78 73 75 65 Q83 58 85 46 Z" fill="#1C1917"/>' +
-      wing +
-      '<g class="t-eye"><circle cx="90" cy="48.5" r="3.2" fill="#4A4A4A"/><circle cx="90" cy="48.5" r="2.1" fill="#000"/><circle cx="90.7" cy="47.8" r=".7" fill="#FFF"/></g>' +
-      '<path class="t-beak" d="M97 50 L115 57 L97 60 Z" fill="#A7AFB7"/>' +
-      '</g>' + (happy ? '<path d="M50 95 L100 88" stroke="#8B6F4E" stroke-width="3" stroke-linecap="round"/>' : '') + '</svg>';
-  }
-
   /* ---------- Miniaturas 72 × 72 ---------- */
   var T = {};
   T.parque = '<rect width="72" height="72" fill="#CDEBF8"/><circle cx="57" cy="15" r="8" fill="#FFD166"/><rect y="50" width="72" height="22" fill="#8CC26F"/><path d="M28 72 L38 52 H60 L70 72Z" fill="#E9DCC0"/><path d="M18 72 C 19 58, 16 48, 22 38" stroke="#7A5233" stroke-width="3" fill="none" stroke-linecap="round"/><g stroke="#2F6B2C" stroke-width="3" stroke-linecap="round" fill="none"><path d="M22 38 C 14 32, 8 33, 4 38"/><path d="M22 38 C 17 29, 11 27, 7 28"/><path d="M22 38 C 26 30, 32 28, 38 30"/><path d="M22 38 C 29 34, 35 36, 38 41"/></g><rect x="44" y="40" width="14" height="12" rx="1.5" fill="#E7E1D5"/><rect x="42" y="50" width="18" height="4" rx="1" fill="#D6CFC1"/><path d="M51 40 V31 M47.5 34.5 H54.5" stroke="#57534E" stroke-width="2.6" stroke-linecap="round"/><circle cx="51" cy="28" r="2.6" fill="#57534E"/>';
@@ -117,7 +100,7 @@ window.RT_ART = (function () {
   /* Mapa decorativo del botón "Explorar mapa" ya está en el HTML. */
 
   return {
-    CAT_ICON: CAT_ICON, use: use, toche: toche, thumb: thumb, has: function (id) { return !!T[id]; },
+    CAT_ICON: CAT_ICON, use: use, thumb: thumb, has: function (id) { return !!T[id]; },
     scene: scene, FEATURED: FEATURED, stampSmall: stampSmall, stampBig: stampBig,
     pin: pin, pinService: pinService, pinSearch: pinSearch
   };
