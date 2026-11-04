@@ -35,7 +35,7 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 
 | Uso | Servicio |
 |---|---|
-| Mapa | Teselas de [CARTO](https://carto.com/attributions) con datos de [OpenStreetMap](https://www.openstreetmap.org/copyright). Si fallan, usa las de OpenStreetMap. |
+| Mapa | Teselas y datos de [OpenStreetMap](https://www.openstreetmap.org/copyright). En alto contraste se oscurecen con CSS. (CARTO ya pide API key.) |
 | Rutas | OSRM en los servidores de [FOSSGIS](https://routing.openstreetmap.de/) (perfiles a pie y en carro). |
 | Hospitales, CAI, restaurantes y lugares sin coordenadas | [Overpass API](https://overpass-api.de/) |
 | Buscador y nombre del barrio | [Nominatim](https://nominatim.org/) |

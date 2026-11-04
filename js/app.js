@@ -746,7 +746,10 @@
   }
   function setTiles() {
     if (!map) return;
-    var mode = osmFallback ? 'osm' : (S.contraste ? 'dark' : 'light');
+    // CARTO ahora pide API key (devuelve una imagen «API KEY REQUIRED»): usamos las teselas de OpenStreetMap.
+    // En alto contraste se oscurecen con CSS (.osm-tiles).
+    var mode = 'osm';
+    $('#map').classList.add('osm-tiles');
     if (tiles && tileMode === mode) return;
     if (tiles) map.removeLayer(tiles);
     var T = TILES[mode];
