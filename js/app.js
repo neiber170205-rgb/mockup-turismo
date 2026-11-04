@@ -76,30 +76,37 @@
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* Textos propios de la app sobre cada lugar */
-  var ART_ES = { parque: 'el', catedral: 'la', torre: 'la', quinta: 'la', biblioteca: 'la', malecon: 'el', templo: 'el', casa: 'la', puente: 'el', cristo: 'el' };
+  var ART_ES = { zulima: 'el', parque: 'el', catedral: 'la', gobernacion: 'el', torre: 'la', victoria: 'el', biblioteca: 'la', quinta: 'la', cristo: 'el', columna: 'la' };
   function delName(p) { return (ART_ES[p.id] === 'la' ? 'de la ' : 'del ') + p.name; }
   function alName(p) { return (ART_ES[p.id] === 'la' ? 'a la ' : 'al ') + p.name; }
   var PHOTO_DESC = {
-    parque: 'El parque, con palmeras y la estatua de Santander en el centro.',
-    catedral: 'La fachada clara de la catedral, con su torre central y su reloj.',
-    torre: 'La torre con su reloj blanco y el techo rojo en punta.',
-    quinta: 'Una casona de un piso con arcos y techo de teja.',
-    biblioteca: 'Un edificio con columnas al frente y una puerta de madera.',
-    malecon: 'Un paseo con árboles y faroles junto al río.',
-    templo: 'Antes: las ruinas del templo después del terremoto de 1875. Hoy: el templo reconstruido en parte, con su cúpula blanca.',
-    casa: 'Una casa colonial blanca con techo de teja y ventanas de madera.',
-    puente: 'Un puente de arcos sobre el río.',
-    cristo: 'La estatua de Cristo con los brazos abiertos en lo alto de una colina.'
+    zulima: 'Todavía no hay foto libre del teatro; se muestra una ilustración.',
+    parque: 'Antes: la estatua de Santander en 1893, rodeada de árboles. Hoy: la plaza abierta con palmeras y árboles.',
+    catedral: 'Antes: la iglesia de San José en 1874, de dos torres, antes del terremoto. Hoy: la fachada clara de la catedral con sus dos torres.',
+    gobernacion: 'El palacio visto desde el aire, con su cúpula achatada en la esquina.',
+    torre: 'La torre blanca del reloj sobre la calle 13, con casas de colores alrededor.',
+    victoria: 'La columna alta con la estatua de la Victoria en medio del parque.',
+    biblioteca: 'Antes: el Hospital San Juan de Dios hacia 1910. Hoy: el edificio amarillo de la biblioteca, de dos pisos.',
+    quinta: 'La casona blanca de la Quinta Teresa, con corredor de columnas y techo de teja.',
+    cristo: 'La estatua blanca de Cristo con los brazos abiertos sobre un pedestal.',
+    columna: 'Antes: la columna en la loma hacia 1910. Hoy: la columna dorada y torcida con la ciudad al fondo.'
   };
-  var ANTES_TAG = { templo: 'Antes · 1875' };
+  var ANTES_TAG = { parque: 'Antes · 1893', catedral: 'Antes · 1874', biblioteca: 'Antes · c. 1910', columna: 'Antes · c. 1910' };
   var KEYWORDS = {
-    parque: ['parque santander', 'parque'], catedral: ['catedral', 'san jose'], torre: ['torre del reloj', 'torre', 'reloj'],
-    quinta: ['quinta teresa', 'quinta'], biblioteca: ['biblioteca', 'julio perez'], malecon: ['malecon'], templo: ['templo historico', 'templo'],
-    casa: ['casa natal', 'casa de santander'], puente: ['puente', 'simon bolivar'], cristo: ['cristo rey', 'cristo']
+    zulima: ['teatro zulima', 'teatro', 'zulima'], parque: ['parque santander', 'parque', 'santander'], catedral: ['catedral', 'san jose'],
+    gobernacion: ['gobernacion', 'cupula chata', 'palacio', 'cupula'], torre: ['torre del reloj', 'torre', 'reloj', 'casa de la cultura'],
+    victoria: ['parque la victoria', 'parque colon', 'victoria', 'colon'], biblioteca: ['biblioteca', 'julio perez', 'hospital san juan de dios'],
+    quinta: ['quinta teresa', 'quinta'], cristo: ['cristo rey', 'cristo'], columna: ['columna de bolivar', 'loma de bolivar', 'batalla de cucuta', 'columna']
   };
-  var ROUTE_TIME = { historica: '2 h', independencia: 'Medio día', cultura: '1 h 30', fe: '1 h' };
-  var ROUTE_THUMB = { historica: 'torre', independencia: 'templo', sabores: 'pastel', cultura: 'quinta', fe: 'catedral', verde: 'malecon' };
-  var ROUTE_META = { sabores: 'Pastel de garbanzo, mute y más', verde: 'Malecón y parques · a pie o en bici' };
+  var ROUTE_TIME = { historica: '2,8 km' };
+  var ROUTE_THUMB = { historica: 'parque', terremoto: 'catedral', cultura: 'quinta', monumentos: 'victoria', fe: 'cristo', sabores: 'pastel' };
+  var ROUTE_META = { sabores: 'Pastel de garbanzo, mute y más', terremoto: 'Catedral, antiguo hospital y Parque Santander · a pie' };
+  // Miniatura: ilustración de respaldo + foto real encima si existe en img/
+  function thumbHTML(id, size) {
+    var p = place(id), art = ART.thumb(id, size);
+    if (!p || !p.photo || !p.photo.hoy) return art;
+    return art + '<img class="thumb-photo" src="img/' + id + '-hoy.jpg" alt="" loading="lazy" onerror="this.remove()">';
+  }
 
   /* =========================================================
      Estado y almacenamiento
@@ -531,16 +538,13 @@
   }
 
   function resolvePlaces() {
-    var cached = cacheGet('places-v2', 7 * 864e5);
+    var cached = cacheGet('places-v3', 7 * 864e5);
     if (cached) { applyResolved(cached); return; }
     var bb = '(7.78,-72.58,7.98,-72.42)';
     var q = '[out:json][timeout:25];(' +
-      'nwr["name"~"Malec[oó]n",i]' + bb + ';' +
       'nwr["name"~"Cristo Rey",i]' + bb + ';' +
       'nwr["leisure"="park"]["name"~"Santander",i](around:700,7.88654,-72.50442);' +
-      'nwr["name"~"Quinta Teresa",i](around:1200,7.88178,-72.50218);' +
-      'nwr["name"~"Casa Natal",i](around:2500,7.8285,-72.4622);' +
-      'way["highway"]["name"~"Libertadores",i](7.85,-72.53,7.95,-72.47);' +
+      'nwr["name"~"Quinta Teresa",i](around:1200,7.88179,-72.50139);' +
       ');out center tags;';
     overpass(q).then(function (j) {
       var els = (j && j.elements) || [];
@@ -567,11 +571,11 @@
       if (cr) res.cristo = { c: cr, src: 'OpenStreetMap' };
       var pq = pick(function (t) { return t.leisure === 'park' && /santander/i.test(t.name || ''); }, [7.88654, -72.50442], 700);
       if (pq) res.parque = { c: pq, src: 'OpenStreetMap' };
-      var qt = pick(function (t) { return /quinta teresa/i.test(t.name || ''); }, [7.88178, -72.50218], 1200);
+      var qt = pick(function (t) { return /quinta teresa/i.test(t.name || ''); }, [7.88179, -72.50139], 1200);
       if (qt) res.quinta = { c: qt, src: 'OpenStreetMap' };
       var cs = pick(function (t) { return /casa natal/i.test(t.name || ''); }, [7.8285, -72.4622], 2500);
       if (cs) res.casa = { c: cs, src: 'OpenStreetMap' };
-      cacheSet('places-v2', res);
+      cacheSet('places-v3', res);
       applyResolved(res);
     }).catch(function () {});
   }
@@ -844,7 +848,7 @@
     b.setAttribute('aria-busy', on ? 'true' : 'false');
   }
   var MAP_FILTERS = [['todo', 'Todo', 'grid', null], ['historia', 'Historia', 'landmark', 'historia'], ['cultural', 'Cultural', 'palette', 'cultural'],
-    ['gastronomia', 'Gastronomía', 'utensils', 'gastronomia'], ['religioso', 'Religioso', 'church', 'religioso'], ['naturaleza', 'Naturaleza', 'tree', 'naturaleza'], ['servicios', 'Servicios', 'help', 'servicios']];
+    ['gastronomia', 'Gastronomía', 'utensils', 'gastronomia'], ['religioso', 'Religioso', 'church', 'religioso'], ['servicios', 'Servicios', 'help', 'servicios']];
   function chipsHTML(list, active, attr) {
     return list.map(function (f) {
       return '<button type="button" class="chip" aria-pressed="' + (f[0] === active) + '" ' + attr + '="' + f[0] + '"><span class="chip-ic" style="--c:' + (f[3] ? 'var(--c-' + f[3] + ')' : 'var(--ink)') + '">' + ic(f[2]) + '</span>' + f[1] + '</button>';
@@ -912,7 +916,7 @@
   function renderPlaceCard(it) {
     var c = $('#place-card'), color = 'var(--c-' + (it.cat || 'servicios') + ')', tint = catOf(it).tint;
     if (it.type === 'search') { color = '#0369A1'; tint = '#E6F6FD'; }
-    var thumb = it.type === 'place' ? ART.thumb(it.thumb, 76) : ic(itemIcon(it));
+    var thumb = it.type === 'place' ? thumbHTML(it.thumb, 76) : ic(itemIcon(it));
     var sec = '';
     if (it.type === 'place') sec = '<button type="button" class="btn btn-soft" data-act="listen" aria-pressed="false">' + ic('vol') + '<span>Escuchar</span></button>';
     else if (it.type === 'svc') sec = '<a class="btn btn-soft" href="tel:' + (it.phone || (it.kind === 'cai' ? '112' : '123')) + '">' + ic('phone') + 'Llamar' + (it.phone ? '' : ' ' + (it.kind === 'cai' ? '112' : '123')) + '</a>';
@@ -1499,26 +1503,26 @@
      ========================================================= */
   var rutaF = 'todas';
   var RUTA_FILTERS = [['todas', 'Todas', 'grid', null], ['historia', 'Historia', 'landmark', 'historia'], ['cultural', 'Cultural', 'palette', 'cultural'],
-    ['gastronomia', 'Gastronomía', 'utensils', 'gastronomia'], ['religioso', 'Religioso', 'church', 'religioso'], ['naturaleza', 'Naturaleza', 'tree', 'naturaleza']];
+    ['gastronomia', 'Gastronomía', 'utensils', 'gastronomia'], ['religioso', 'Religioso', 'church', 'religioso']];
   function renderRutas() {
     $('#route-chips').innerHTML = chipsHTML(RUTA_FILTERS, rutaF, 'data-rf');
     var showFeat = rutaF === 'todas' || rutaF === 'historia';
-    var feat = byId(ROUTES, 'independencia');
+    var feat = ROUTES.filter(function (r) { return r.featured; })[0];
     var list = ROUTES.filter(function (r) { return (rutaF === 'todas' || r.cat === rutaF) && !(showFeat && r.featured); });
     var html = '', i = 0;
     if (showFeat) {
       var fd = routeDone(feat);
       html += '<button type="button" class="route-feat card-lift rise" style="--i:' + (i++) + '" data-route="' + feat.id + '">' +
-        '<span class="feat-art">' + ART.FEATURED + '<span class="feat-badge">' + ic('star') + 'Destacada</span></span>' +
+        '<span class="feat-art">' + ART.FEATURED + '<img class="thumb-photo" src="img/' + feat.stops[1] + '-hoy.jpg" alt="" onerror="this.remove()">' + '<span class="feat-badge">' + ic('star') + 'Destacada</span></span>' +
         '<span class="feat-body"><span class="col"><span class="over" style="--c:var(--c-' + feat.cat + ')">' + CAT[feat.cat].label + '</span><b class="feat-name">' + esc(feat.name) + '</b></span>' +
-        '<span class="meta-chips"><span class="mchip">' + ic('pin') + feat.stops.length + ' paradas</span><span class="mchip">' + ic('clock') + ROUTE_TIME[feat.id] + '</span><span class="mchip">' + ic('car') + 'En carro</span></span>' +
+        '<span class="meta-chips"><span class="mchip">' + ic('pin') + feat.stops.length + ' paradas</span><span class="mchip">' + ic('clock') + ROUTE_TIME[feat.id] + '</span><span class="mchip">' + ic(feat.mode === 'en carro' ? 'car' : 'walk') + (feat.mode === 'en carro' ? 'En carro' : 'A pie') + '</span></span>' +
         '<span class="prog-row"><span class="bar"><span style="width:' + Math.round(fd / feat.stops.length * 100) + '%;background:var(--gold)"></span></span><span>' + fd + ' de ' + feat.stops.length + ' estampas</span></span></span></button>' +
         '<h2 class="list-title rise" style="--i:' + (i++) + '">Todas las rutas</h2>';
     }
     html += list.map(function (r) {
       var done = routeDone(r), all = done === r.stops.length;
       return '<button type="button" class="route-item card-lift rise" style="--i:' + (i++) + '" data-route="' + r.id + '">' +
-        '<span class="ri-thumb">' + ART.thumb(ROUTE_THUMB[r.id], 76) + '</span>' +
+        '<span class="ri-thumb">' + thumbHTML(ROUTE_THUMB[r.id], 76) + '</span>' +
         '<span class="ri-body"><span class="over" style="--c:var(--c-' + r.cat + ')">' + CAT[r.cat].label + '</span><b>' + esc(r.name) + '</b><span class="ri-meta">' + esc(routeMeta(r)) + '</span>' +
         '<span class="ri-prog' + (all ? ' done' : '') + '"><span class="bar"><span style="width:' + Math.round(done / r.stops.length * 100) + '%"></span></span>' +
         (all ? '<span class="ri-done">' + ic('check') + 'Completada</span>' : '<span class="ri-count">' + done + ' de ' + r.stops.length + '</span>') + '</span></span></button>';
@@ -1565,6 +1569,12 @@
     go('punto', opts);
   }
   function fillLayer(el, id, era) {
+    var pp = place(id);
+    if (era === 'antes' && pp && pp.photo && pp.photo.hoy && !pp.photo.antes) {
+      el.classList.remove('sepia');
+      el.innerHTML = '<div class="no-antes"><span>Todavía no hay una foto antigua de uso libre. Las del archivo histórico necesitan permiso.</span></div>';
+      return;
+    }
     var sc = ART.scene(id, era);
     el.innerHTML = sc.svg;
     el.classList.toggle('sepia', !!sc.sepia);
@@ -1605,9 +1615,9 @@
     var color = 'var(--c-' + p.cat + ')';
     fillLayer($('#p-hoy'), p.id, 'hoy');
     fillLayer($('#p-antes'), p.id, 'antes');
-    $('#p-tag-antes').textContent = ANTES_TAG[p.id] || 'Antes';
-    $('#compare').setAttribute('aria-label', 'Comparación entre la imagen de antes y la de hoy ' + delName(p) + '. Ilustración de referencia.' + (S.fotos && PHOTO_DESC[p.id] ? ' ' + PHOTO_DESC[p.id] : ''));
-    setSplit(50, false);
+    $('#p-tag-antes').textContent = ANTES_TAG[p.id] || (p.photo && p.photo.hoy ? 'Sin foto antigua' : 'Antes');
+    $('#compare').setAttribute('aria-label', 'Comparación entre la imagen de antes y la de hoy ' + delName(p) + '. ' + (p.photo && p.photo.hoy ? 'Fotos reales.' : 'Ilustración de referencia.') + (S.fotos && PHOTO_DESC[p.id] ? ' ' + PHOTO_DESC[p.id] : ''));
+    setSplit(p.photo && p.photo.hoy && !p.photo.antes ? 0 : 50, false);
     var near = isArrived(p.id), got = hasStamp(p.id), d = (pos && p.coords) ? hav(ll(pos), p.coords) : null;
     var st = $('#p-status');
     st.className = 'chip-status' + (near ? ' arrived' : (got ? ' done' : ''));
@@ -1621,7 +1631,9 @@
       var now = !/^\d/.test(t.year) && /hoy/i.test(t.year);
       return '<li' + (now ? ' class="now"' : '') + '><span class="tl-dot" aria-hidden="true"></span><span class="tl-txt"><b>' + esc(t.year) + '</b><span>' + esc(t.text) + '</span></span></li>';
     }).join('');
-    $('#p-precision').textContent = (p.precision === 'verificada' ? 'Ubicación verificada. ' : (p.precision === 'osm' ? 'Ubicación de OpenStreetMap. ' : (p.coords ? 'Ubicación aproximada. ' : 'Ubicación pendiente. '))) + (p.fuente || '');
+    $('#p-precision').textContent = (p.verificar ? 'Por verificar: ' + p.verificar + ' ' : '') + (p.refs ? 'Fuentes: ' + p.refs + ' ' : '') +
+      (p.photo && p.photo.hoyCred ? 'Foto de hoy: ' + p.photo.hoyCred + '. ' : '') + (p.photo && p.photo.antesCred ? 'Foto antigua: ' + p.photo.antesCred + '. ' : '') +
+      (p.precision === 'verificada' ? 'Ubicación verificada. ' : (p.precision === 'osm' ? 'Ubicación de OpenStreetMap. ' : (p.coords ? 'Ubicación aproximada. ' : 'Ubicación pendiente. '))) + (p.fuente || '');
     stopNarration();
     var words = narration(p).join(' ').split(/\s+/).length;
     punto.est = words / (2.5 * (RATE[S.vel] || 1));
@@ -1644,7 +1656,7 @@
   }
   onEnter.punto = function (opts) {
     opts = opts || {};
-    var id = opts.place || punto.id || 'templo';
+    var id = opts.place || punto.id || 'parque';
     if (!place(id)) return;
     if (opts.routeId !== undefined) punto.routeId = opts.routeId || null;
     else if (id !== punto.id) punto.routeId = null;
@@ -1861,7 +1873,7 @@
     }).join('') : '<li style="grid-column:1/-1"><p class="m-text" style="text-align:center">' + (albumF === 'si' ? 'Aún no tienes estampas. ¡Visita un lugar y tómate una foto!' : '¡Tienes todas las estampas!') + '</p></li>';
     var hist = byId(ROUTES, 'historica'), hd = routeDone(hist), hall = hd === hist.stops.length;
     $('#badge-title').textContent = (hall ? 'Insignia ganada: ' : 'Insignia: ') + hist.badge;
-    $('#badge-text').textContent = 'Ruta Histórica · ' + hd + ' de ' + hist.stops.length + ' paradas';
+    $('#badge-text').textContent = 'Ruta patrimonial · ' + hd + ' de ' + hist.stops.length + ' paradas';
     $('#badge-bar').style.width = Math.round(hd / hist.stops.length * 100) + '%';
     $('#badge-card').classList.toggle('earned', hall);
   }
@@ -2062,7 +2074,7 @@
       setTimeout(function () { startNav(it); }, 120);
       return;
     }
-    if (j === 'punto') { openPunto(punto.id || 'templo'); return; }
+    if (j === 'punto') { openPunto(punto.id || 'parque'); return; }
     if (nav && j !== 'mapa') endNav(true);
     go(j, { tab: true });
   }
@@ -2114,7 +2126,7 @@
     s.inert = true;
     $$('.rise', s).forEach(function (el, i) { el.style.setProperty('--i', i); });
   });
-  $$('[data-thumb]').forEach(function (el) { el.innerHTML = ART.thumb(el.getAttribute('data-thumb'), 56); });
+  $$('[data-thumb]').forEach(function (el) { el.innerHTML = thumbHTML(el.getAttribute('data-thumb'), 56); });
   renderLines();
   applySettings();
   updateCounts();

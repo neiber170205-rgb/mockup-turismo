@@ -1,4 +1,6 @@
 /* Ruta Toche · datos de la app (fase 1)
+ * Lugares: los 10 sitios del avance de investigación del 27 de octubre de 2026
+ * («Patrimonio histórico y cultural de San José de Cúcuta»). refs = fuentes de la ficha.
  * Coordenadas: [latitud, longitud].
  * precision: 'verificada'  -> tomada de una fuente con coordenadas (ver "fuente").
  *            'aproximada'  -> calculada desde la dirección; la app intenta afinarla con OpenStreetMap.
@@ -18,122 +20,176 @@ window.RT_DATA = (function () {
 
   var PLACES = [
     {
-      id: 'parque', name: 'Parque Santander', cat: 'historia', thumb: 'parque',
-      coords: [7.88654, -72.50442], precision: 'aproximada',
-      fuente: 'Calculada desde los límites del parque (Av. 5 y 6, Calles 10 y 11) y la Catedral.',
-      address: 'Entre Av. 5 y 6, Calles 10 y 11, Centro', area: 'Centro de Cúcuta',
+      id: "zulima", name: "Teatro Zulima", cat: "cultural", thumb: "zulima",
+      coords: [7.8876, -72.50378], precision: "osm",
+      fuente: "OpenStreetMap: Teatro Zulima.",
+      address: "Avenida 5.ª entre calles 9 y 10", area: "Centro de Cúcuta",
+      tipo: "Cultural", decl: "BIC departamental (2005)",
       timeline: [
-        { year: '1890', text: 'Se inauguró la estatua en bronce de Francisco de Paula Santander.' },
-        { year: 'Hoy', text: 'Es la plaza principal del centro, entre las avenidas 5 y 6.' }
+        { year: "1954", text: "Abrió como sala de cine el 17 de septiembre." },
+        { year: "2005", text: "La Fundación Cerámica Italia lo recibe en comodato. Ese año se declara bien de interés cultural departamental." },
+        { year: "2009", text: "Renovado por el arquitecto Arturo Cogollo, reabre el 14 de abril con 704 sillas." }
       ],
-      facts: ['Está entre las avenidas 5 y 6 y las calles 10 y 11.', 'En el centro hay una estatua en bronce de Santander, de 1890.', 'A su lado están la Catedral de San José y la Alcaldía.'],
-      next: 'catedral'
+      facts: ["Abrió como cine en 1954.", "Se renovó y reabrió en 2009, con 704 sillas."],
+      refs: "El Tiempo (2010); Figueroa (2022). Solo hay fuentes de prensa.",
+      verificar: "Su única foto histórica (años 50) tiene derechos reservados: falta el permiso de Cucutanuestra.com.",
+      photo: { hoy: false, antes: false, antesYear: null, hoyCred: null, antesCred: null },
+      next: "parque"
     },
     {
-      id: 'catedral', name: 'Catedral de San José', cat: 'religioso', thumb: 'catedral',
-      coords: [7.88631, -72.50369], precision: 'verificada',
-      fuente: 'Código Plus 67V9VFPW+GG (GCatholic). Dirección: Av. 5 #10-73.',
-      address: 'Av. 5 #10-73, frente al Parque Santander', area: 'Centro de Cúcuta',
+      id: "parque", name: "Parque Santander", cat: "historia", thumb: "parque",
+      coords: [7.8863, -72.50428], precision: "osm",
+      fuente: "OpenStreetMap: Parque Santander.",
+      address: "Entre calles 10 y 11 y avenidas 5.ª y 6.ª", area: "Centro de Cúcuta",
+      tipo: "Espacio público", decl: "No figura como BIC nacional",
       timeline: [
-        { year: 'Hoy', text: 'Es la catedral de la Diócesis de Cúcuta, frente al Parque Santander.' }
+        { year: "1875", text: "El plan de reconstrucción tras el terremoto ya incluía el parque." },
+        { year: "1893", text: "El 7 de agosto se inauguró la estatua de Santander, fundida en Hamburgo y pagada por suscripción popular." },
+        { year: "1956", text: "Aquí se recibió al primer obispo de Cúcuta." }
       ],
-      facts: ['Está en la Avenida 5, frente al Parque Santander.', 'Es la catedral de la Diócesis de Cúcuta.'],
-      next: 'torre'
+      facts: ["Está entre las calles 10 y 11 y las avenidas 5.ª y 6.ª.", "La estatua de Santander se fundió en Hamburgo y se pagó entre los ciudadanos."],
+      refs: "La Opinión (2021); Díaz Umaña et al. (2021).",
+      verificar: "Medina fecha la estatua en 1892: hay un año de diferencia por resolver.",
+      photo: { hoy: true, antes: true, antesYear: "1893", hoyCred: "Ruben Valero, 2014 · CC BY-SA 3.0", antesCred: "Estatua de Santander (1893) · dominio público" },
+      next: "catedral"
     },
     {
-      id: 'torre', name: 'Torre del Reloj', cat: 'cultural', thumb: 'torre',
-      coords: [7.88405, -72.50174], precision: 'verificada',
-      fuente: 'OpenStreetMap (vía Mapcarta). Calle 13 entre Av. 3 y 4.',
-      address: 'Calle 13 entre Av. 3 y 4', area: 'Centro de Cúcuta',
+      id: "catedral", name: "Catedral de San José", cat: "religioso", thumb: "catedral",
+      coords: [7.88631, -72.50369], precision: "verificada",
+      fuente: "Código Plus 67V9VFPW+GG (GCatholic).",
+      address: "Frente al Parque Santander", area: "Centro de Cúcuta",
+      tipo: "Religioso y arquitectónico", decl: "No figura como BIC nacional",
       timeline: [
-        { year: '1930', text: 'Se encargó la torre del reloj, tras un viaje a Europa.' },
-        { year: 'Hoy', text: 'Es centro cultural y sede de la Secretaría de Cultura del departamento.' }
+        { year: "1734", text: "Se creó la parroquia de San José." },
+        { year: "1875", text: "El terremoto del 18 de mayo destruyó el templo. Solo quedaron el reloj, parado a las 11:15 a. m., y la estatua de San José." },
+        { year: "1889", text: "El 12 de mayo se puso la primera piedra del nuevo templo." },
+        { year: "1956", text: "Se convirtió en catedral al crearse la Diócesis de Cúcuta." }
       ],
-      facts: ['Está en la Calle 13, entre las avenidas 3 y 4.', 'Hoy es centro cultural, con galería y sala de conferencias.'],
-      next: 'quinta'
+      facts: ["El terremoto de 1875 destruyó el primer templo.", "Su reloj quedó detenido a las 11:15 de la mañana."],
+      refs: "Díaz Umaña et al. (2021).",
+      verificar: null,
+      photo: { hoy: true, antes: true, antesYear: "1874", hoyCred: "EEIM, 2021 · CC BY-SA 4.0", antesCred: "Iglesia de San José (1874) · dominio público" },
+      next: "gobernacion"
     },
     {
-      id: 'quinta', name: 'Quinta Teresa', cat: 'cultural', thumb: 'quinta',
-      coords: [7.88178, -72.50218], precision: 'aproximada',
-      fuente: 'Calculada desde su dirección (esquina de Av. 4 con Calle 15).',
-      address: 'Av. 3 y 4 con Calles 15 y 16', area: 'Centro de Cúcuta',
+      id: "gobernacion", name: "Palacio de la Gobernación", cat: "historia", thumb: "gobernacion",
+      coords: [7.88328, -72.50284], precision: "osm",
+      fuente: "OpenStreetMap: Gobernación de Norte de Santander.",
+      address: "Avenida 5 con calle 14", area: "Centro de Cúcuta",
+      tipo: "Arquitectónico e institucional", decl: "BIC nacional · Resolución 13 de 2005",
       timeline: [
-        { year: '1893', text: 'El banquero Cristian Andresen la construyó y le puso el nombre de su esposa, Teresa.' },
-        { year: '1926', text: 'Pasó al departamento y fue colegio hasta 2006.' },
-        { year: '2015', text: 'Reabrió restaurada como espacio para las artes y la cultura.' }
+        { year: "1914", text: "Empieza la obra, con proyecto del ingeniero Marco A. Gómez." },
+        { year: "1915", text: "La cúpula achatada que le da el nombre sale de Nueva York el 9 de junio." },
+        { year: "1989", text: "Un incendio destruye las estructuras de madera el 2 de octubre." },
+        { year: "1993", text: "Restaurado, se entrega a la comunidad el 19 de noviembre." }
       ],
-      facts: ['Se construyó en 1893 y lleva el nombre de Teresa Briceño.', 'Fue colegio hasta 2006.', 'Reabrió en 2015 como espacio cultural.'],
-      next: 'biblioteca'
+      facts: ["La llaman Cúpula Chata por su cúpula achatada, traída de Nueva York.", "Un incendio la dañó en 1989 y se restauró en 1993."],
+      refs: "Gobernación de Norte de Santander (s. f.); Ministerio de Cultura (2024).",
+      verificar: "La fecha de inauguración varía entre fuentes (1918, 1919 o 1940).",
+      photo: { hoy: true, antes: false, antesYear: null, hoyCred: "Losmanesdeldrone, 2020 · CC BY-SA 4.0", antesCred: null },
+      next: "torre"
     },
     {
-      id: 'biblioteca', name: 'Biblioteca Julio Pérez Ferrero', cat: 'cultural', thumb: 'biblioteca',
-      coords: [7.88507, -72.49981], precision: 'verificada',
-      fuente: 'AroundUs (coordenadas publicadas). Cerca del Parque Colón.',
-      address: 'Cerca del Parque Colón', area: 'Centro de Cúcuta',
+      id: "torre", name: "Casa Torre del Reloj", cat: "cultural", thumb: "torre",
+      coords: [7.88405, -72.50174], precision: "verificada",
+      fuente: "OpenStreetMap. Calle 13 entre Av. 3 y 4.",
+      address: "Calle 13 n.º 3-67", area: "Centro de Cúcuta",
+      tipo: "Arquitectónico y cultural", decl: "BIC nacional · Resolución 1260 de 2003",
       timeline: [
-        { year: 'Hoy', text: 'Biblioteca pública del centro de Cúcuta, cerca del Parque Colón.' }
+        { year: "1910", text: "Se construye la casa. Fue vivienda hasta 1917." },
+        { year: "1923", text: "La compra la Compañía Eléctrica del Norte para su sede." },
+        { year: "1930", text: "Se agrega la torre de 27 m. El reloj, hecho en Turín, tocaba el himno nacional." },
+        { year: "1960", text: "Pasa a ser casa de la cultura." }
       ],
-      facts: ['Es la biblioteca pública del centro, cerca del Parque Colón.'],
+      facts: ["La torre mide unos 27 metros.", "El reloj se hizo en Turín y tocaba el himno nacional."],
+      refs: "Coronel-Ruiz et al. (2022).",
+      verificar: "Las fotos antiguas (1900–1930) tienen derechos reservados.",
+      photo: { hoy: true, antes: false, antesYear: null, hoyCred: "EEIM, 2018 · CC BY-SA 4.0", antesCred: null },
+      next: "victoria"
+    },
+    {
+      id: "victoria", name: "Parque La Victoria (Parque Colón)", cat: "historia", thumb: "victoria",
+      coords: [7.88485, -72.50082], precision: "osm",
+      fuente: "OpenStreetMap: Parque Colón.",
+      address: "Calle 13, centro", area: "Centro de Cúcuta",
+      tipo: "Espacio público y conmemorativo", decl: "No figura como BIC nacional",
+      timeline: [
+        { year: "1882", text: "El Acuerdo 12 le da el nombre de Cristóbal Colón." },
+        { year: "1910", text: "Se inaugura oficialmente." },
+        { year: "1919", text: "Pasa a llamarse Parque de la Victoria. El 7 de agosto se inaugura la estatua de Olinto Marcucci sobre una columna de 13 m." }
+      ],
+      facts: ["El Parque Colón y el Parque La Victoria son el mismo lugar.", "La estatua de la Victoria está sobre una columna de 13 metros."],
+      refs: "La Opinión (2025, 2021).",
+      verificar: null,
+      photo: { hoy: true, antes: false, antesYear: null, hoyCred: "EEIM, 2021 · CC BY-SA 4.0", antesCred: null },
+      next: "biblioteca"
+    },
+    {
+      id: "biblioteca", name: "Biblioteca Julio Pérez Ferrero", cat: "cultural", thumb: "biblioteca",
+      coords: [7.88507, -72.49981], precision: "verificada",
+      fuente: "OpenStreetMap: Biblioteca Pública Julio Pérez Ferrero.",
+      address: "Avenida 2.ª entre calles 12 y 13", area: "Centro de Cúcuta",
+      tipo: "Cultural y arquitectónico", decl: "BIC nacional · Resolución 0500 de 2003",
+      timeline: [
+        { year: "1803", text: "Una Real Cédula ordena fundar el Hospital San Juan de Dios." },
+        { year: "1875", text: "El terremoto lo destruye y mueren los 32 enfermos internados. Se reconstruye en 1877." },
+        { year: "2000", text: "Restaurado, abre como biblioteca pública el 21 de diciembre." }
+      ],
+      facts: ["El edificio fue el Hospital San Juan de Dios.", "Abrió como biblioteca en el año 2000."],
+      refs: "Medina (s. f.); Pastrana Arango (2000); Maldonado Pérez (2019).",
+      verificar: null,
+      photo: { hoy: true, antes: true, antesYear: "1910", hoyCred: "Ruben Valero, 2014 · CC BY-SA 3.0", antesCred: "Hospital San Juan de Dios (c. 1910) · dominio público" },
+      next: "quinta"
+    },
+    {
+      id: "quinta", name: "Quinta Teresa", cat: "cultural", thumb: "quinta",
+      coords: [7.88179, -72.50139], precision: "osm",
+      fuente: "OpenStreetMap: Quinta Teresa.",
+      address: "Calle 16 n.º 3-60", area: "Centro de Cúcuta",
+      tipo: "Arquitectura civil y cultural", decl: "BIC nacional · Decreto 2007 de 1996",
+      timeline: [
+        { year: "1893", text: "La construye Domingo Díaz para Cristian Andresen y Teresa Briceño, de quien toma el nombre." },
+        { year: "1926", text: "Teresa Briceño la vende al departamento, que instala un colegio." },
+        { year: "2015", text: "Restaurada, se entrega el 6 de febrero. Hoy es centro cultural." }
+      ],
+      facts: ["Lleva el nombre de Teresa Briceño.", "Hoy es centro cultural."],
+      refs: "Radio Nacional de Colombia (2015); La Opinión (2023).",
+      verificar: "Medina fecha la venta en 1914: falta verificarlo en la escritura.",
+      photo: { hoy: true, antes: false, antesYear: null, hoyCred: "EEIM, 2017 · CC BY-SA 4.0", antesCred: null },
+      next: "cristo"
+    },
+    {
+      id: "cristo", name: "Monumento a Cristo Rey", cat: "religioso", thumb: "cristo",
+      coords: [7.87705, -72.50092], precision: "osm",
+      fuente: "OpenStreetMap: Monumento a Cristo Rey.",
+      address: "Cerro de la Santa Cruz, La Cabrera", area: "La Cabrera",
+      tipo: "Religioso y paisajístico", decl: "No figura como BIC nacional",
+      timeline: [
+        { year: "1908", text: "Los vecinos del barrio El Caimán ponen una cruz de madera en el cerro." },
+        { year: "1942", text: "Ocho mujeres forman la junta pro-monumento." },
+        { year: "1947", text: "Empieza la obra, dirigida por el escultor Marco León Mariño." }
+      ],
+      facts: ["Está en lo alto del Cerro de la Santa Cruz, en La Cabrera.", "Lo hizo el escultor Marco León Mariño."],
+      refs: "Avendaño (s. f., citado en Vílchez, 2019).",
+      verificar: "No hay estudios académicos: la información viene de prensa.",
+      photo: { hoy: true, antes: false, antesYear: null, hoyCred: "Ruben Valero, 2014 · CC BY-SA 3.0", antesCred: null },
       next: null
     },
     {
-      id: 'malecon', name: 'Malecón', cat: 'naturaleza', thumb: 'malecon',
-      coords: null, precision: 'osm',
-      fuente: 'Se ubica con OpenStreetMap (Avenida Los Libertadores).',
-      address: 'Av. Los Libertadores, junto al río Pamplonita', area: 'Cúcuta',
+      id: "columna", name: "Columna de Bolívar", cat: "historia", thumb: "columna",
+      coords: [7.89107, -72.51744], precision: "aproximada",
+      fuente: "Monumento sin nombre en OpenStreetMap junto a la Loma de Bolívar.",
+      address: "Loma de Bolívar", area: "Loma de Bolívar",
+      tipo: "Histórico y conmemorativo", decl: "No figura como BIC nacional",
       timeline: [
-        { year: 'Hoy', text: 'Paseo de unos 4 km junto al río Pamplonita.' },
-        { year: 'Domingos', text: 'Hay ciclovía en el carril junto al paseo.' }
+        { year: "1813", text: "Según la tradición, aquí se libró la Batalla de Cúcuta el 28 de febrero." },
+        { year: "1883", text: "Se levanta la columna por el centenario del nacimiento de Bolívar." },
+        { year: "1921", text: "Desde ese año, el desfile del 28 de febrero termina en el monumento." }
       ],
-      facts: ['Paseo de unos 4 km por la Avenida Los Libertadores.', 'Los domingos hay ciclovía.', 'En diciembre se llena de luces navideñas.'],
-      next: null
-    },
-    {
-      id: 'templo', name: 'Templo Histórico', cat: 'historia', thumb: 'templo', ruins: true,
-      coords: [7.82889, -72.46278], precision: 'verificada',
-      fuente: 'Wikipedia: Historic church of Cúcuta (7°49′44″N 72°27′46″O).',
-      address: 'Parque Gran Colombiano', area: 'Villa del Rosario',
-      timeline: [
-        { year: '1821', text: 'Aquí se reunió el Congreso de Cúcuta.' },
-        { year: '1821', text: 'Aquí se redactó y firmó la Constitución de 1821.' },
-        { year: '1875', text: 'El terremoto lo destruyó casi por completo; luego se reconstruyó en parte.' },
-        { year: '1935', text: 'Fue declarado Monumento Nacional.' }
-      ],
-      facts: ['En 1821 aquí se reunió el Congreso de Cúcuta.', 'Aquí se firmó la Constitución de 1821.', 'El terremoto de 1875 lo destruyó casi por completo.', 'Es Monumento Nacional desde 1935.'],
-      next: 'casa'
-    },
-    {
-      id: 'casa', name: 'Casa Natal de Santander', cat: 'historia', thumb: 'casa',
-      coords: [7.8285, -72.4622], precision: 'aproximada',
-      fuente: 'En el Parque Gran Colombiano, junto al Templo Histórico (posición aproximada).',
-      address: 'Parque Gran Colombiano, junto al Templo Histórico', area: 'Villa del Rosario',
-      timeline: [
-        { year: '1792', text: 'Aquí nació Francisco de Paula Santander y vivió hasta los 13 años.' },
-        { year: 'Hoy', text: 'Es museo, con su uniforme, espadas y otros objetos.' }
-      ],
-      facts: ['Aquí nació Francisco de Paula Santander.', 'Hoy es museo con su uniforme y sus espadas.'],
-      next: 'puente'
-    },
-    {
-      id: 'puente', name: 'Puente Simón Bolívar', cat: 'historia', thumb: 'puente',
-      coords: [7.8179, -72.4508], precision: 'verificada',
-      fuente: 'Wikipedia: Simón Bolívar International Bridge (7°49′04″N 72°27′03″O).',
-      address: 'La Parada, Villa del Rosario', area: 'Frontera con Venezuela',
-      timeline: [
-        { year: 'Hoy', text: 'Cruza el río Táchira y une La Parada con San Antonio del Táchira.' }
-      ],
-      facts: ['Cruza el río Táchira en la frontera con Venezuela.', 'Une La Parada con San Antonio del Táchira.'],
-      next: null
-    },
-    {
-      id: 'cristo', name: 'Monumento a Cristo Rey', cat: 'religioso', thumb: 'cristo',
-      coords: null, precision: 'osm',
-      fuente: 'Se ubica con OpenStreetMap (barrio La Cabrera).',
-      address: 'Av. 4, La Cabrera', area: 'Cúcuta',
-      timeline: [
-        { year: 'Hoy', text: 'Estatua en lo alto de La Cabrera, con vista a toda la ciudad.' }
-      ],
-      facts: ['Está en lo alto del barrio La Cabrera.', 'Tiene vista panorámica de la ciudad.'],
+      facts: ["Recuerda la Batalla de Cúcuta del 28 de febrero de 1813.", "Se levantó en 1883."],
+      refs: "La Opinión (2019); Oliveros (2020).",
+      verificar: null,
+      photo: { hoy: true, antes: true, antesYear: "1910", hoyCred: "EEIM, 2016 · CC BY-SA 4.0", antesCred: "Monumento a la Batalla de Cúcuta (c. 1910) · dominio público" },
       next: null
     }
   ];
@@ -145,27 +201,27 @@ window.RT_DATA = (function () {
   ];
 
   var STAMPS = [
-    { id: 'templo', name: 'Templo Histórico', cat: 'historia' },
     { id: 'parque', name: 'Parque Santander', cat: 'historia' },
-    { id: 'torre', name: 'Torre del Reloj', cat: 'cultural' },
-    { id: 'pastel', name: 'Pastel de garbanzo', cat: 'gastronomia' },
-    { id: 'malecon', name: 'Malecón', cat: 'naturaleza' },
-    { id: 'casa', name: 'Casa Natal de Santander', cat: 'historia' },
     { id: 'catedral', name: 'Catedral de San José', cat: 'religioso' },
+    { id: 'torre', name: 'Casa Torre del Reloj', cat: 'cultural' },
+    { id: 'gobernacion', name: 'Palacio de la Gobernación', cat: 'historia' },
+    { id: 'pastel', name: 'Pastel de garbanzo', cat: 'gastronomia' },
+    { id: 'zulima', name: 'Teatro Zulima', cat: 'cultural' },
+    { id: 'victoria', name: 'Parque La Victoria', cat: 'historia' },
+    { id: 'biblioteca', name: 'Biblioteca Julio Pérez Ferrero', cat: 'cultural' },
     { id: 'quinta', name: 'Quinta Teresa', cat: 'cultural' },
     { id: 'cristo', name: 'Monumento a Cristo Rey', cat: 'religioso' },
-    { id: 'mute', name: 'Mute cucuteño', cat: 'gastronomia' },
-    { id: 'puente', name: 'Puente Simón Bolívar', cat: 'historia' },
-    { id: 'biblioteca', name: 'Biblioteca Julio Pérez Ferrero', cat: 'cultural' }
+    { id: 'columna', name: 'Columna de Bolívar', cat: 'historia' },
+    { id: 'mute', name: 'Mute cucuteño', cat: 'gastronomia' }
   ];
 
   var ROUTES = [
-    { id: 'historica', name: 'Ruta Histórica del Centro', cat: 'historia', mode: 'a pie', stops: ['parque', 'catedral', 'torre', 'quinta', 'biblioteca'], badge: 'Explorador del Centro' },
-    { id: 'independencia', name: 'Ruta de la Independencia', cat: 'historia', mode: 'en carro', stops: ['templo', 'casa', 'puente'], featured: true, area: 'Villa del Rosario' },
-    { id: 'sabores', name: 'Sabores cucuteños', cat: 'gastronomia', mode: 'a pie', stops: ['pastel', 'mute'], dishes: true },
-    { id: 'cultura', name: 'Arte y cultura', cat: 'cultural', mode: 'a pie', stops: ['torre', 'quinta', 'biblioteca'] },
+    { id: 'historica', name: 'Ruta patrimonial del centro', cat: 'historia', mode: 'a pie', stops: ['zulima',  'parque',  'catedral',  'gobernacion',  'torre',  'victoria',  'biblioteca',  'quinta',  'cristo'], featured: true, badge: 'Explorador del Patrimonio' },
+    { id: 'terremoto', name: 'El terremoto de 1875', cat: 'historia', mode: 'a pie', stops: ['catedral', 'biblioteca', 'parque'] },
+    { id: 'cultura', name: 'Arte y cultura', cat: 'cultural', mode: 'a pie', stops: ['torre', 'quinta', 'zulima', 'biblioteca'] },
+    { id: 'monumentos', name: 'Parques y monumentos', cat: 'historia', mode: 'a pie', stops: ['parque', 'victoria', 'columna'] },
     { id: 'fe', name: 'Templos y fe', cat: 'religioso', mode: 'a pie', stops: ['catedral', 'cristo'] },
-    { id: 'verde', name: 'Cúcuta verde', cat: 'naturaleza', mode: 'a pie o en bici', stops: ['malecon', 'parque'] }
+    { id: 'sabores', name: 'Sabores cucuteños', cat: 'gastronomia', mode: 'a pie', stops: ['pastel', 'mute'], dishes: true }
   ];
 
   var LINES = [
@@ -183,7 +239,7 @@ window.RT_DATA = (function () {
 
   var CITY = {
     center: [7.88654, -72.50442],        // Parque Santander
-    demo: [7.88370, -72.50300],          // Punto de partida de demostración (centro)
+    demo: [7.88500, -72.50600],          // Punto de partida de demostración (centro, a 2 cuadras del Parque Santander)
     bbox: [7.78, -72.58, 7.98, -72.42],  // sur, oeste, norte, este (área metropolitana)
     radiusKm: 30
   };

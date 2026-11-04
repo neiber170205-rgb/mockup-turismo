@@ -43,21 +43,36 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 
 Son servicios gratuitos con límites de uso, buenos para un prototipo. Para producción conviene un proveedor con contrato o servidores propios. Las respuestas se guardan un tiempo en el navegador para no repetir consultas.
 
-## Coordenadas de los puntos
+## Lugares y contenido
 
-Están en `js/data.js`, cada una con su fuente:
+Los 10 sitios del avance de investigación «Patrimonio histórico y cultural de San José de Cúcuta» (27 de octubre de 2026), en `js/data.js`:
 
-- **Verificadas**: Catedral de San José, Torre del Reloj, Biblioteca Julio Pérez Ferrero, Templo Histórico, Puente Simón Bolívar.
-- **Aproximadas** (se corrigen solas si OpenStreetMap tiene el lugar): Parque Santander, Quinta Teresa, Casa Natal de Santander.
-- **Se buscan en OpenStreetMap al abrir la app**: Malecón y Monumento a Cristo Rey. Si no se encuentran, no aparecen en el mapa.
+- Teatro Zulima, Parque Santander, Catedral de San José, Palacio de la Gobernación (Cúpula Chata), Casa Torre del Reloj, Parque La Victoria (Parque Colón), Biblioteca Julio Pérez Ferrero, Quinta Teresa, Monumento a Cristo Rey y Columna de Bolívar.
+- Cada lugar trae su línea de tiempo, declaratoria, fuentes (`refs`) y los datos «por verificar» del documento.
+- Ruta patrimonial del centro: 9 paradas, unos 2,8 km a pie.
+- Coordenadas: OpenStreetMap; Catedral, Torre y Biblioteca verificadas. La Columna de Bolívar es aproximada.
 
-## Agregar fotos reales
+## Fotos
 
-Pon las fotos en `img/` con estos nombres y reemplazan solas a la ilustración:
+- En `img/` con el nombre `<id>-hoy.jpg` y `<id>-antes.jpg`. Si falta una, se ve la ilustración.
+- Solo fotos de uso libre del anexo del avance. Las de Cucutanuestra.com, ARFOS y Flickr necesitan permiso.
+- Faltan: Teatro Zulima, y fotos antiguas libres de Gobernación, Torre del Reloj, Parque Colón, Quinta Teresa y Cristo Rey.
 
-- `img/<id>-hoy.jpg` y `img/<id>-antes.jpg`
-- IDs: `templo`, `parque`, `catedral`, `torre`, `quinta`, `biblioteca`, `malecon`, `casa`, `puente`, `cristo`.
-- Si usas fotos de Wikimedia Commons, da crédito al autor según la licencia.
+| Foto | Autor | Año | Licencia |
+|---|---|---|---|
+| Catedral de San José, fachada | EEIM | 2021 | CC BY-SA 4.0 (Wikimedia Commons) |
+| Iglesia de San José antes del terremoto | Autor desconocido | 1874 | Dominio público (Wikimedia Commons) |
+| Parque Santander de Cúcuta | Ruben Valero | 2014 | CC BY-SA 3.0 (Wikimedia Commons) |
+| Estatua de Santander en el Parque Central | Autor desconocido | 1893 | Dominio público (Wikimedia Commons) |
+| Biblioteca Pública Julio Pérez Ferrero | Ruben Valero | 2014 | CC BY-SA 3.0 (Wikimedia Commons) |
+| Hospital San Juan de Dios de Cúcuta | Autor desconocido | c. 1910 | Dominio público (Wikimedia Commons) |
+| Centro Cultural Quinta Teresa | EEIM | 2017 | CC BY-SA 4.0 (Wikimedia Commons) |
+| Palacio de Gobierno «Cúpula Chata», vista aérea | Losmanesdeldrone | 2020 | CC BY-SA 4.0 (Wikimedia Commons) |
+| Torre del Reloj de Cúcuta | EEIM | 2018 | CC BY-SA 4.0 (Wikimedia Commons) |
+| Parque La Victoria (Parque Colón) | EEIM | 2021 | CC BY-SA 4.0 (Wikimedia Commons) |
+| Monumento a Cristo Rey, vista frontal | Ruben Valero | 2014 | CC BY-SA 3.0 (Wikimedia Commons) |
+| Obelisco de la Loma de Bolívar | EEIM | 2016 | CC BY-SA 4.0 (Wikimedia Commons) |
+| Monumento a la Batalla de Cúcuta | Autor desconocido | c. 1910 | Dominio público (Wikimedia Commons) |
 
 ## Archivos
 
@@ -76,7 +91,8 @@ Para probarlo en tu computador: `python3 -m http.server` dentro de la carpeta y 
 
 ## Pendiente
 
-- Validar los textos de historia con fuentes oficiales.
 - Logos de las entidades de emergencia: solo con permiso de cada una (hay espacios marcados `LOGO`).
-- Fotos reales de antes y hoy.
+- Permisos para las fotos con derechos reservados.
+- Resolver los datos «por verificar» con fuentes primarias.
+- Validar el prototipo con habitantes y visitantes (objetivo 2 del anteproyecto).
 - Fase 2: taxis y rutas de bus.

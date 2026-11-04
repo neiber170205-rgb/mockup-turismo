@@ -1,2 +1,4 @@
-Coloca aquí las fotos reales con el nombre <id>-hoy.jpg o <id>-antes.jpg.
-IDs: templo, parque, catedral, torre, quinta, biblioteca, malecon, casa, puente, cristo.
+Fotos reales de los sitios: <id>-hoy.jpg y <id>-antes.jpg.
+IDs: zulima, parque, catedral, gobernacion, torre, victoria, biblioteca, quinta, cristo, columna.
+Solo fotos de uso libre (Wikimedia Commons, CC BY-SA o dominio público). Créditos en el README.
+Faltan: foto de Teatro Zulima y fotos antiguas libres de Gobernación, Torre, Parque Colón, Quinta Teresa y Cristo Rey.
