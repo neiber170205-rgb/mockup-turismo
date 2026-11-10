@@ -19,6 +19,14 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 - **Ayuda**: botón para llamar al 123, hospital y CAI más cercanos (OpenStreetMap), líneas oficiales y compartir ubicación.
 - **Accesibilidad**: guía por voz, alto contraste, tres tamaños de letra, paleta para daltonismo con nombres siempre visibles, velocidad de voz, vibración, compatible con lectores de pantalla y teclado. Respeta "reducir movimiento" y la zona de la cámara del celular.
 - **Hablar con Toche** (botón central): comandos de voz como "llévame al Templo Histórico", "¿dónde estoy?" o "ayuda". Si el navegador no entiende voz, muestra un menú.
+- **Seguridad por colores** (SRS v1): cada lugar dice su zona con color, ícono, palabra y voz. Verde = segura, amarilla = precaución (miradores), roja = restringida (pasos informales).
+- **Rutas por tiempo**: ½ día (4 paradas), 1 día (6) y 2 días (14, hasta Villa del Rosario). Ordenadas por recorrido real: miradores en la mañana.
+- **Hotel base** sugerido en cada ruta, por cercanía al punto de partida.
+- **Alerta de noche**: después de las 6 p. m., Loma de Bolívar y Cristo Rey avisan y proponen planes en zona verde.
+- **Corredor seguro**: si te sales del Parque Gran Colombiano hacia la frontera, vibra, avisa por voz y te devuelve. El polígono es un esquema por validar.
+- **Transporte seguro** (fase 1): orienta a hotel, taxis formales y apps. Pedir el carro dentro de la app es fase 2.
+- **Sin internet**: la app, las fichas y las fotos quedan guardadas; el mapa muestra lo que ya viste.
+- En el panel del computador: **Simular de noche** y **Probar frontera**.
 - **Toche animado**: el toche real (*Icterus chrysater*), hecho solo con código. Respira, parpadea, mueve la cabeza a saltos, busca con el pico, sacude la cola y mueve el pico cuando la app habla.
   - Bienvenida: llega volando y se posa en la rama.
   - Inicio, navegación y menú de voz: su cabeza en la insignia, que habla con cada sugerencia.
@@ -45,7 +53,7 @@ Son servicios gratuitos con límites de uso, buenos para un prototipo. Para prod
 
 ## Lugares y contenido
 
-Los 10 sitios del avance de investigación «Patrimonio histórico y cultural de San José de Cúcuta» (27 de octubre de 2026), en `js/data.js`:
+Los 10 sitios del avance de investigación, más Corredor de Los Patios, La Bagatela, Casa Natal de Santander y Templo Histórico (del SRS, marcados «por verificar») «Patrimonio histórico y cultural de San José de Cúcuta» (27 de octubre de 2026), en `js/data.js`:
 
 - Teatro Zulima, Parque Santander, Catedral de San José, Palacio de la Gobernación (Cúpula Chata), Casa Torre del Reloj, Parque La Victoria (Parque Colón), Biblioteca Julio Pérez Ferrero, Quinta Teresa, Monumento a Cristo Rey y Columna de Bolívar.
 - Cada lugar trae su línea de tiempo, declaratoria, fuentes (`refs`) y los datos «por verificar» del documento.

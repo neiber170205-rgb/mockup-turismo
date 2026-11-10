@@ -28,6 +28,8 @@ window.RT_ART = (function () {
   T.victoria = '<rect width="72" height="72" fill="#CDEBF8"/><rect y="56" width="72" height="16" fill="#8CC26F"/><rect x="33" y="18" width="6" height="36" fill="#EFE6D6"/><rect x="28" y="52" width="16" height="6" fill="#D6CFC1"/><path d="M36 6 l5 8 -5 4 -5 -4z" fill="#D6CFC1"/><circle cx="12" cy="48" r="9" fill="#5E9E4A"/><circle cx="60" cy="47" r="10" fill="#4E8C3D"/>';
   T.zulima = '<rect width="72" height="72" fill="#F1EBFD"/><rect x="12" y="26" width="48" height="34" rx="3" fill="#FFFFFF" stroke="#C4B5FD" stroke-width="2"/><path d="M12 26 L36 12 L60 26 Z" fill="#6D28D9"/><path d="M22 60 V42 A6 6 0 0 1 34 42 V60 Z M38 60 V42 A6 6 0 0 1 50 42 V60 Z" fill="#6D28D9" opacity="0.85"/><path d="M24 32 h24" stroke="#6D28D9" stroke-width="2.5" stroke-linecap="round"/>';
   T.columna = '<rect width="72" height="72" fill="#CDEBF8"/><path d="M0 72 V52 Q 36 40 72 52 V72Z" fill="#8CC26F"/><rect x="32" y="14" width="8" height="34" fill="#E3B341"/><rect x="27" y="46" width="18" height="6" fill="#D6CFC1"/><path d="M30 14 h12 l-2 -5 h-8z" fill="#C9831F"/>';
+  T.bagatela = '<rect width="72" height="72" fill="#CDEBF8"/><rect y="56" width="72" height="16" fill="#8CC26F"/><rect x="8" y="34" width="56" height="24" fill="#F7F2EA"/><path d="M4 36 L36 22 L68 36Z" fill="#C4704A"/><path d="M14 58 V46 h8 v12 M32 58 V44 h8 v14 M50 58 V46 h8 v12" fill="#8B5E3C"/>';
+  T.patios = '<rect width="72" height="72" fill="#FEF3E2"/><path d="M0 50 H72" stroke="#D6CFC1" stroke-width="10"/><path d="M0 50 H72" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="6 6"/><circle cx="36" cy="28" r="14" fill="#FFFFFF" stroke="#EDE5D6" stroke-width="2"/><path d="M28 30 A8 8 0 0 1 44 30 Z" fill="#E8A33D"/>';
   T.comida = T.pastel;
 
   function thumb(id, size) {

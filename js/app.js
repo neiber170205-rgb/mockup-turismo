@@ -98,8 +98,8 @@
     victoria: ['parque la victoria', 'parque colon', 'victoria', 'colon'], biblioteca: ['biblioteca', 'julio perez', 'hospital san juan de dios'],
     quinta: ['quinta teresa', 'quinta'], cristo: ['cristo rey', 'cristo'], columna: ['columna de bolivar', 'loma de bolivar', 'batalla de cucuta', 'columna']
   };
-  var ROUTE_TIME = { historica: '2,8 km' };
-  var ROUTE_THUMB = { historica: 'parque', terremoto: 'catedral', cultura: 'quinta', monumentos: 'victoria', fe: 'cristo', sabores: 'pastel' };
+  var ROUTE_TIME = { historica: '2,8 km', corta: '½ día', mediana: '1 día', larga: '2 días' };
+  var ROUTE_THUMB = { corta: 'gobernacion', mediana: 'columna', larga: 'templo', historica: 'parque', terremoto: 'catedral', cultura: 'quinta', monumentos: 'victoria', fe: 'cristo', sabores: 'pastel' };
   var ROUTE_META = { sabores: 'Pastel de garbanzo, mute y más', terremoto: 'Catedral, antiguo hospital y Parque Santander · a pie' };
   // Miniatura: ilustración de respaldo + foto real encima si existe en img/
   function thumbHTML(id, size) {
@@ -435,6 +435,7 @@
     if (curId() === 'inicio') renderSuggestion();
     if (nav) navOnPos();
     else checkFence();
+    checkBorder();
     if (!prev || hav(ll(prev), ll(pos)) > 600) {
       if (curId() === 'ayuda') renderNear();
       if (map && !nav && !selId && !routeView && curId() === 'mapa' && (!prev || prev.src !== pos.src)) map.setView(ll(pos), Math.max(map.getZoom(), 15));
@@ -732,6 +733,13 @@
     L_places = L.layerGroup().addTo(map);
     L_extra = L.layerGroup().addTo(map);
     L_stops = L.layerGroup().addTo(map);
+    // Capa de seguridad: corredor del Parque Gran Colombiano y miradores en zona amarilla
+    var Lz = L.layerGroup().addTo(map), ZS = D.SAFETY;
+    L.polygon(ZS.corridor.polygon, { color: '#1E8449', weight: 2, dashArray: '6 6', fillColor: ZS.zones.verde.map, fillOpacity: 0.15, interactive: false }).addTo(Lz);
+    D.PLACES.forEach(function (p) {
+      var z = ZS.places[p.id];
+      if (z && z[0] === 'amarilla' && p.coords) L.circle(p.coords, { radius: 260, color: '#B7950B', weight: 2, dashArray: '6 6', fillColor: ZS.zones.amarilla.map, fillOpacity: 0.2, interactive: false }).addTo(Lz);
+    });
     map.on('click', function (e) {
       var t = e.originalEvent && e.originalEvent.target;
       if (t && t.closest && t.closest('.leaflet-marker-icon')) return;
@@ -926,7 +934,7 @@
     else if (it.phone) sec = '<a class="btn btn-soft" href="tel:' + it.phone + '">' + ic('phone') + 'Llamar</a>';
     var info = '<span class="pc-thumb" style="--t:' + tint + ';--c:' + color + '">' + thumb + '</span>' +
       '<span class="pc-txt"><span class="cat-chip" style="--t:' + tint + ';--c:' + color + '">' + ic(itemIcon(it)) + esc(itemLabel(it)) + '</span>' +
-      '<span class="pc-name">' + esc(it.name) + '</span>' +
+      '<span class="pc-name">' + esc(it.name) + '</span>' + (it.type === 'place' ? zoneBadge(it.id, true) : '') +
       '<span class="pc-dist" id="pc-dist">' + distHTML(it) + '</span>' +
       (it.type === 'place' ? '<span class="pc-more">Ver historia' + ic('chev-r') + '</span>' : (it.sub ? '<span class="pc-dist">' + esc(it.sub) + '</span>' : '')) + '</span>';
     c.innerHTML = '<button type="button" class="card-x" data-act="close" aria-label="Cerrar">' + ic('x') + '</button>' +
@@ -1149,7 +1157,10 @@
         var ok = hasStamp(p.id);
         return '<button type="button" role="listitem" class="stop-chip' + (ok ? ' ok' : '') + '" data-stop="' + p.id + '" style="--c:var(--c-' + p.cat + ')" aria-label="Parada ' + (i + 1) + ': ' + esc(p.name) + (ok ? ', estampa ganada' : '') + (p.coords ? '' : ', sin ubicación aún') + '"><span class="n">' + (ok ? ic('check') : (i + 1)) + '</span>' + esc(p.name) + '</button>';
       }).join('') + '</div>' +
-      '<div class="pc-actions"><button type="button" class="btn btn-primary grow" data-act="start">' + ic('nav') + (done === r.stops.length ? 'Repetir la ruta' : (done ? 'Seguir la ruta' : 'Empezar ruta')) + '</button></div>';
+      hotelBlock(r) +
+      (r.stops.some(function (sid) { var z = zoneOf(sid); return z && z.night === 'no'; }) ? '<p class="t-note left">' + ic('alert') + ' Los miradores van primero, en la mañana. De noche son zona solitaria.</p>' : '') +
+      '<div class="pc-actions"><button type="button" class="btn btn-primary grow" data-act="start">' + ic('nav') + (done === r.stops.length ? 'Repetir la ruta' : (done ? 'Seguir la ruta' : 'Empezar ruta')) + '</button>' +
+      '<button type="button" class="btn btn-soft" data-act="transporte" aria-label="Transporte seguro">' + ic('taxi') + 'Transporte</button></div>';
     showCard('#route-card');
     $('#place-card').hidden = true;
     var pts = stops.filter(function (p) { return p.coords; }).map(function (p) { return p.coords; });
@@ -1161,13 +1172,13 @@
       setFollowing(false);
     }
     if (pts.length >= 2) {
-      getRoute(pts, r.mode === 'en carro' ? 'car' : 'foot').then(function (res) {
+      getRoute(pts, /carro/.test(r.mode) ? 'car' : 'foot').then(function (res) {
         if (!routeView || routeView.id !== id) return;
         drawRoute(res.coords, 'overview');
         var m = $('#rc-meta'); if (m) m.textContent = routeMeta(r, fmtDist(res.dist));
       }, function () { if (routeView && routeView.id === id) drawRoute(pts, 'approx'); });
     }
-    if (!quiet) speak(r.name + '. ' + routeMeta(r) + '. Llevas ' + done + ' de ' + r.stops.length + ' estampas.');
+    if (!quiet) speak(r.name + '. ' + routeMeta(r) + '. Llevas ' + done + ' de ' + r.stops.length + ' estampas.' + (r.hotels ? ' Hotel base sugerido: ' + byId(HOTELS, r.hotels[0]).name + '.' : ''));
   }
   function closeRouteOverview(keepMarkers) {
     routeView = null;
@@ -1183,10 +1194,11 @@
     if (b.hasAttribute('data-stop')) { openPunto(b.getAttribute('data-stop'), { routeId: r.id }); return; }
     var a = b.getAttribute('data-act');
     if (a === 'close') closeRouteOverview();
+    else if (a === 'transporte') openTransport();
     else if (a === 'start') {
       var next = r.stops.map(place).filter(function (p) { return p && p.coords && !hasStamp(p.id); })[0] || r.stops.map(place).filter(function (p) { return p && p.coords; })[0];
       if (!next) { toast('Las paradas de esta ruta aún no tienen ubicación'); return; }
-      startNav(itemFromPlace(next), { routeId: r.id, profile: r.mode === 'en carro' ? 'car' : null });
+      startNav(itemFromPlace(next), { routeId: r.id, profile: /carro/.test(r.mode) ? 'car' : null });
     }
   });
 
@@ -1225,6 +1237,8 @@
   }
   function startNav(it, opts) {
     opts = opts || {};
+    var gid = typeof it === 'string' ? it : (it && it.type === 'place' ? it.id : null);
+    if (gid && !opts.nightOk) { var o2 = Object.assign({}, opts, { nightOk: true }); nightGuard(gid, function () { startNav(it, o2); }); return; }
     if (typeof it === 'string') it = items[it] || (place(it) ? itemFromPlace(place(it)) : null);
     if (!it || !it.coords) { toast('Este lugar aún no tiene ubicación en el mapa'); return; }
     if (!pos) useDemo();
@@ -1511,8 +1525,16 @@
     $('#route-chips').innerHTML = chipsHTML(RUTA_FILTERS, rutaF, 'data-rf');
     var showFeat = rutaF === 'todas' || rutaF === 'historia';
     var feat = ROUTES.filter(function (r) { return r.featured; })[0];
-    var list = ROUTES.filter(function (r) { return (rutaF === 'todas' || r.cat === rutaF) && !(showFeat && r.featured); });
+    var list = ROUTES.filter(function (r) { return !r.dur && (rutaF === 'todas' || r.cat === rutaF) && !(showFeat && r.featured); });
     var html = '', i = 0;
+    if (rutaF === 'todas') {
+      html += '<h2 class="list-title rise" style="--i:' + (i++) + '">¿Cuánto tiempo tienes?</h2><div class="dur-grid">' + ROUTES.filter(function (r) { return r.dur; }).map(function (r) {
+        var hasYellow = r.stops.some(function (id) { var z = zoneOf(id); return z && z.key === 'amarilla'; });
+        var areas = []; r.stops.forEach(function (id) { var p = place(id); if (p && areas.indexOf(p.area.replace('Centro de Cúcuta', 'Cúcuta')) < 0) areas.push(p.area.replace('Centro de Cúcuta', 'Cúcuta')); });
+        return '<button type="button" class="dur-card rise" style="--i:' + (i++) + '" data-route="' + r.id + '"><span class="dur-tab">' + esc(r.durLabel) + '</span><span class="dur-body"><b>' + esc(r.name) + '</b><small>' + r.stops.length + ' paradas · ' + esc(r.mode) + ' · ' + esc(areas.slice(0, 3).join(', ')) + '</small><span class="dur-badges">' +
+          '<span class="zbadge sm" style="--zf:#1E8449;--zi:#fff">' + ic('shield-ok') + (hasYellow ? 'Casi toda en zona verde' : 'Toda en zona verde') + '</span>' + (hasYellow ? '<span class="zbadge sm" style="--zf:#F1C40F;--zi:#1C1917">' + ic('alert') + 'Miradores solo de día</span>' : '') + '</span></span>' + ic('chev-r') + '</button>';
+      }).join('') + '</div><h2 class="list-title rise" style="--i:' + (i++) + '">Explorar por tema</h2>';
+    }
     if (showFeat) {
       var fd = routeDone(feat);
       html += '<button type="button" class="route-feat card-lift rise" style="--i:' + (i++) + '" data-route="' + feat.id + '">' +
@@ -1558,6 +1580,94 @@
       }).join('') +
       '<div class="m-actions"><button type="button" class="btn btn-ghost btn-block" data-m="food">' + ic('utensils') + 'Ver restaurantes cerca</button></div>' +
       '<p class="t-note left">Los restaurantes salen de OpenStreetMap.</p>');
+  }
+
+
+  /* =========================================================
+     Seguridad, horario nocturno, frontera y transporte (SRS v1)
+     ========================================================= */
+  var SAFETY = D.SAFETY, HOTELS = D.HOTELS, TRANSPORT = D.TRANSPORT;
+  var ZICON = { shield: 'shield-ok', alert: 'alert', ban: 'ban' };
+  function zoneOf(id) {
+    var z = SAFETY.places[id];
+    if (!z) return null;
+    return { key: z[0], night: z[1], tip: z[2] || '', Z: SAFETY.zones[z[0]] };
+  }
+  function nightLabel(n) { return n === 'si' ? 'Día y noche' : (n === 'no' ? 'Solo de día' : (n === 'eventos' ? 'Día y eventos de noche' : 'De día')); }
+  function zoneBadge(id, small) {
+    var z = zoneOf(id); if (!z) return '';
+    return '<span class="zbadge' + (small ? ' sm' : '') + '" style="--zf:' + z.Z.fill + ';--zi:' + z.Z.ink + '">' + ic(ZICON[z.Z.icon]) + esc(z.Z.label + ' · ' + z.Z.word + ' · ' + nightLabel(z.night)) + '</span>';
+  }
+  function zoneSpeech(id) {
+    var z = zoneOf(id); if (!z) return '';
+    return z.Z.label + ', ' + z.Z.word.toLowerCase() + '. ' + nightLabel(z.night) + '. ' + z.tip;
+  }
+  function isNight() {
+    if (S.simNoche) return true;
+    var hr = new Date().getHours();
+    return hr >= SAFETY.nightFrom || hr < SAFETY.nightTo;
+  }
+  // Si es de noche y el lugar es solo de día, ofrece alternativas antes de seguir.
+  function nightGuard(id, proceed) {
+    var z = zoneOf(id), p = place(id);
+    if (!z || z.night !== 'no' || !isNight() || !p) { proceed(); return; }
+    vibrate([80, 60, 80]);
+    speak(p.name + ' es mejor de día. De noche el sitio queda solo. Te propongo otros planes en zona verde.', { force: S.voz });
+    openModal('<div class="m-head"><span class="m-ic" style="--t:#FEF6D8;--c:#1C1917">' + ic('moon') + '</span><h2 class="t-h2" id="modal-title" tabindex="-1">' + esc(p.name) + ' es mejor de día</h2></div>' +
+      zoneBadge(id) +
+      '<p class="m-text">De noche el sitio queda solo y no se recomienda subir a pie. Mejor ve mañana en la mañana.</p>' +
+      '<p class="t-note left">Planes para esta noche, en zona verde:</p>' +
+      SAFETY.nightAlternatives.map(function (aid) {
+        var a = place(aid); if (!a) return '';
+        return '<button type="button" class="m-alt" data-m="nav" data-id="' + aid + '"><span class="ri-thumb">' + thumbHTML(aid, 48) + '</span><span class="grow"><b>' + esc(a.name) + '</b><small>' + esc(a.area) + '</small></span>' + ic('chev-r') + '</button>';
+      }).join('') +
+      '<div class="m-actions"><button type="button" class="btn btn-primary btn-block" data-m="transporte">' + ic('taxi') + 'Transporte seguro</button>' +
+      '<button type="button" class="btn btn-ghost btn-block" data-m="igual" data-id="' + id + '">Ir de todas formas</button></div>');
+    nightGuard.pending = proceed;
+  }
+  function openTransport() {
+    openModal('<div class="m-head"><span class="m-ic" style="--t:#FEF6D8;--c:#1C1917">' + ic('taxi') + '</span><h2 class="t-h2" id="modal-title" tabindex="-1">Transporte seguro</h2></div>' +
+      '<p class="m-text">De noche o entre municipios, pide el carro desde un lugar formal: tu hotel, un restaurante o un centro comercial.</p>' +
+      '<div class="m-list">' + TRANSPORT.map(function (t) {
+        return '<div class="m-item"><span class="m-ic" style="--t:#F6F5F2;--c:#1C1917">' + ic(t.id === 'hotel' ? 'bed' : (t.id === 'apps' ? 'phone' : 'taxi')) + '</span><span class="grow"><b>' + esc(t.name) + '</b><small>' + esc(t.text) + '</small></span></div>';
+      }).join('') + '</div>' +
+      '<p class="t-note left">Fase 1: la app te orienta. Pedir el carro dentro de la app llega en la fase 2. Emergencias: 123.</p>' +
+      '<div class="m-actions"><a class="btn btn-ghost btn-block" href="tel:123">' + ic('phone') + 'Llamar al 123</a></div>');
+    speak('Transporte seguro. Pídelo en tu hotel, en una línea de taxi formal o en tu app de transporte.');
+  }
+  // Geocerca del corredor seguro (RF-05)
+  function inPoly(pt, poly) {
+    var x = pt[1], y = pt[0], inside = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      var xi = poly[i][1], yi = poly[i][0], xj = poly[j][1], yj = poly[j][0];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+    }
+    return inside;
+  }
+  var borderShown = 0;
+  function checkBorder() {
+    if (!pos) return;
+    var C = SAFETY.corridor, c = ll(pos);
+    if (hav(c, C.center) > C.watchRadius || inPoly(c, C.polygon)) return;
+    if (Date.now() - borderShown < 10 * 60000) return;
+    borderShown = Date.now();
+    vibrate([200, 100, 200, 100, 200]);
+    speak('Atención. Estás saliendo del corredor seguro del ' + C.name + '. Más allá hay pasos informales de frontera. No es zona turística. Vuelve al parque.', { force: true });
+    var Z = SAFETY.zones.roja;
+    openModal('<div class="alert-red"><div class="m-head"><span class="m-ic" style="--t:#FBEAE8;--c:#C0392B">' + ic('ban') + '</span><h2 class="t-h2" id="modal-title" tabindex="-1">Estás saliendo del corredor seguro</h2></div></div>' +
+      '<span class="zbadge" style="--zf:' + Z.fill + ';--zi:' + Z.ink + '">' + ic('ban') + 'Zona roja · Restringida · No apta para turismo</span>' +
+      '<p class="m-text">Más allá hay pasos informales de frontera. Vuelve al ' + esc(C.name) + ' y quédate en las vías principales.</p>' +
+      '<div class="m-actions"><button type="button" class="btn btn-primary btn-block" data-m="nav" data-id="templo">' + ic('nav') + 'Volver al corredor</button>' +
+      '<button type="button" class="btn btn-ghost btn-block" data-m="transporte">' + ic('taxi') + 'Transporte seguro</button>' +
+      '<a class="btn btn-ghost btn-block" href="tel:123">' + ic('phone') + 'Llamar al 123</a></div>' +
+      '<p class="t-note left">El corredor es un esquema aproximado, por validar con la Alcaldía de Villa del Rosario.</p>');
+  }
+  function hotelBlock(r) {
+    if (!r.hotels) return '';
+    return '<div class="rc-hotels"><span class="rc-day">Hotel base sugerido · por cercanía</span>' + r.hotels.map(function (hid) {
+      var ho = byId(HOTELS, hid); if (!ho) return '';
+      return '<span class="rc-hotel">' + ic('bed') + '<span><b>' + esc(ho.name) + '</b><small>' + esc(ho.area + ' · ' + (ho.address || 'dirección por confirmar')) + '</small></span></span>';
+    }).join('') + '</div>';
   }
 
   /* =========================================================
@@ -1628,6 +1738,7 @@
     var r = punto.routeId ? byId(ROUTES, punto.routeId) : null;
     $('#p-route').textContent = r ? r.name + ' · Parada ' + (r.stops.indexOf(p.id) + 1) + ' de ' + r.stops.length : CAT[p.cat].label + ' · ' + p.area;
     $('#p-name').textContent = p.name;
+    $('#p-zona').innerHTML = zoneBadge(p.id);
     $('#p-loc').textContent = p.address + (p.area && p.address.indexOf(p.area) < 0 && !/^(Centro|Cúcuta)/.test(p.area) ? ' · ' + p.area : '');
     $('#p-timeline').style.setProperty('--c', color);
     $('#p-timeline').innerHTML = p.timeline.map(function (t) {
@@ -1925,6 +2036,8 @@
     else if (a === 'dish') { var d = byId(DISHES, id); closeModal(); openCamera({ id: id, name: d.name, thumb: id, label: 'tu ' + d.name.toLowerCase() }); }
     else if (a === 'food') { closeModal(); go('mapa', { tab: true, filter: 'gastronomia' }); }
     else if (a === 'cmd') { closeModal(); handleCommand(b.getAttribute('data-cmd')); }
+    else if (a === 'transporte') { closeModal(); setTimeout(openTransport, 250); }
+    else if (a === 'igual') { closeModal(); var pf = nightGuard.pending; nightGuard.pending = null; if (pf) pf(); }
   });
 
   /* =========================================================
@@ -1937,6 +2050,8 @@
         '<span class="line-name" aria-hidden="true">' + esc(l.name) + '</span></a></li>';
     }).join('') +
       '<li><button type="button" class="line-card share-loc" id="share-loc"><span class="share-ic" aria-hidden="true">' + ic('pin') + '</span><span class="line-name">Compartir mi ubicación</span></button></li>';
+    $('#lines').insertAdjacentHTML('beforeend', '<li><button type="button" class="line-card share-loc" id="safe-ride"><span class="share-ic" aria-hidden="true">' + ic('taxi') + '</span><span class="line-name">Transporte seguro</span></button></li>');
+    $('#safe-ride').addEventListener('click', openTransport);
     $('#share-loc').addEventListener('click', shareLocation);
   }
   function nearCard(s, c) {
@@ -2095,6 +2210,17 @@
     if (it.type === 'place') { vibrate([120, 80, 120]); openPunto(it.id, { arrived: true }); }
     else toast('Llegaste a ' + it.name);
   });
+  $('#pn-night').addEventListener('click', function () {
+    S.simNoche = !S.simNoche; save();
+    this.setAttribute('aria-pressed', S.simNoche ? 'true' : 'false');
+    toast(S.simNoche ? 'Simulando que son las 7 p. m.' : 'Hora real');
+  });
+  $('#pn-night').setAttribute('aria-pressed', S.simNoche ? 'true' : 'false');
+  $('#pn-border').addEventListener('click', function () {
+    borderShown = 0; S.locMode = 'demo'; save();
+    demoAt = [7.8240, -72.4560]; useDemo();
+    toast('Ubicación de prueba: cerca de la frontera, fuera del corredor');
+  });
   $('#pn-safe').addEventListener('click', function () {
     var on = !app.classList.contains('show-safe');
     app.classList.toggle('show-safe', on); this.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -2137,4 +2263,11 @@
   go(S.onboarded ? 'inicio' : 'bienvenida', { tab: true, silent: true });
   if (S.onboarded) bootLocation();
   resolvePlaces();
+})();
+
+/* Funciona sin internet: fichas, fotos y la app quedan guardadas (RNF-03) */
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
 })();

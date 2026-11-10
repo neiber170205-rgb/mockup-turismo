@@ -191,6 +191,69 @@ window.RT_DATA = (function () {
       verificar: null,
       photo: { hoy: true, antes: true, antesYear: "1910", hoyCred: "EEIM, 2016 · CC BY-SA 4.0", antesCred: "Monumento a la Batalla de Cúcuta (c. 1910) · dominio público" },
       next: null
+    },
+    {
+      id: "patios", name: "Corredor de Los Patios", cat: "gastronomia", thumb: "patios",
+      coords: [7.8333, -72.5167], precision: "aproximada",
+      fuente: "Centro de Los Patios (Wikipedia: 7°50′N 72°31′O). Es una zona, no un punto.",
+      address: "Municipio de Los Patios", area: "Los Patios",
+      tipo: "Zona gastronómica", decl: "Zona, no es un bien patrimonial",
+      timeline: [
+        { year: "Hoy", text: "Corredor vial metropolitano con oferta gastronómica local." }
+      ],
+      facts: ["Une a Cúcuta con el sur del área metropolitana.", "Buen lugar para probar comida típica."],
+      refs: "Guía de rutas y seguridad (nov 2026).",
+      verificar: "Falta definir qué tramo del corredor se recomienda.",
+      photo: { hoy: false, antes: false, antesYear: null, hoyCred: null, antesCred: null },
+      next: null
+    },
+    {
+      id: "bagatela", name: "La Bagatela", cat: "historia", thumb: "bagatela",
+      coords: [7.8293, -72.463], precision: "aproximada",
+      fuente: "En el Parque Gran Colombiano, cerca del Templo Histórico (posición aproximada).",
+      address: "Parque Gran Colombiano", area: "Villa del Rosario",
+      tipo: "Histórico", decl: "Por verificar",
+      timeline: [
+        { year: "1821", text: "Casona colonial que sirvió de sede del gobierno durante el Congreso de Cúcuta." },
+        { year: "1971", text: "La reconstruyó el Ministerio de Obras Públicas." }
+      ],
+      facts: ["Fue sede del gobierno durante el Congreso de 1821.", "Hace parte del complejo histórico del Parque Gran Colombiano."],
+      refs: "Guía de rutas y seguridad (nov 2026); Wikipedia: House of the Bagatela.",
+      verificar: "Confirmar con una fuente académica: no está en el avance del 27 de octubre.",
+      photo: { hoy: false, antes: false, antesYear: null, hoyCred: null, antesCred: null },
+      next: null
+    },
+    {
+      id: "casa", name: "Casa Natal de Santander", cat: "historia", thumb: "casa",
+      coords: [7.8285, -72.4622], precision: "aproximada",
+      fuente: "En el Parque Gran Colombiano, junto al Templo Histórico (posición aproximada).",
+      address: "Parque Gran Colombiano", area: "Villa del Rosario",
+      tipo: "Histórico", decl: "Por verificar",
+      timeline: [
+        { year: "1792", text: "Aquí nació Francisco de Paula Santander." },
+        { year: "Hoy", text: "Casa museo dentro del parque histórico." }
+      ],
+      facts: ["Santander es conocido como el Hombre de las Leyes.", "La guía la llama Casa del Altillo."],
+      refs: "Guía de rutas y seguridad (nov 2026).",
+      verificar: "No está en el avance del 27 de octubre: falta la ficha de investigación.",
+      photo: { hoy: false, antes: false, antesYear: null, hoyCred: null, antesCred: null },
+      next: null
+    },
+    {
+      id: "templo", name: "Templo Histórico y Parque Gran Colombiano", cat: "historia", thumb: "templo",
+      coords: [7.82889, -72.46278], precision: "verificada",
+      fuente: "Wikipedia: Historic church of Cúcuta (7°49′44″N 72°27′46″O).",
+      address: "Parque Gran Colombiano, autopista internacional", area: "Villa del Rosario",
+      tipo: "Histórico", decl: "Por verificar",
+      timeline: [
+        { year: "1821", text: "Aquí sesionó el Congreso de Cúcuta y se aprobó la Constitución de la Gran Colombia." },
+        { year: "1875", text: "El terremoto lo dejó en ruinas; se conservan sus restos." }
+      ],
+      facts: ["Es el punto final de la ruta larga.", "Quédate dentro del parque y en las vías principales."],
+      refs: "Guía de rutas y seguridad (nov 2026).",
+      verificar: "No está en el avance del 27 de octubre: falta la ficha de investigación.",
+      photo: { hoy: false, antes: false, antesYear: null, hoyCred: null, antesCred: null },
+      next: null
     }
   ];
 
@@ -212,10 +275,16 @@ window.RT_DATA = (function () {
     { id: 'quinta', name: 'Quinta Teresa', cat: 'cultural' },
     { id: 'cristo', name: 'Monumento a Cristo Rey', cat: 'religioso' },
     { id: 'columna', name: 'Columna de Bolívar', cat: 'historia' },
+    { id: 'bagatela', name: 'La Bagatela', cat: 'historia' },
+    { id: 'casa', name: 'Casa Natal de Santander', cat: 'historia' },
+    { id: 'templo', name: 'Templo Histórico', cat: 'historia' },
     { id: 'mute', name: 'Mute cucuteño', cat: 'gastronomia' }
   ];
 
   var ROUTES = [
+    { id: 'corta', name: 'Centro histórico', dur: 'corta', durLabel: '½ día', cat: 'historia', mode: 'a pie', stops: ['gobernacion', 'torre', 'catedral', 'parque'], hotels: ['casablanca', 'sterling'] },
+    { id: 'mediana', name: 'Patrimonio y miradores', dur: 'mediana', durLabel: '1 día', cat: 'historia', mode: 'carro y a pie', stops: ['columna', 'cristo', 'quinta', 'biblioteca', 'victoria', 'zulima'], hotels: ['inka', 'casablanca'] },
+    { id: 'larga', name: 'Inmersión metropolitana', dur: 'larga', durLabel: '2 días', cat: 'historia', mode: 'carro y a pie', stops: ['columna', 'cristo', 'quinta', 'gobernacion', 'torre', 'victoria', 'biblioteca', 'catedral', 'parque', 'zulima', 'patios', 'bagatela', 'casa', 'templo'], days: [10, 4], hotels: ['casablanca', 'villaantigua', 'granester', 'posadaabuelo'] },
     { id: 'historica', name: 'Ruta patrimonial del centro', cat: 'historia', mode: 'a pie', stops: ['zulima',  'parque',  'catedral',  'gobernacion',  'torre',  'victoria',  'biblioteca',  'quinta',  'cristo'], featured: true, badge: 'Explorador del Patrimonio' },
     { id: 'terremoto', name: 'El terremoto de 1875', cat: 'historia', mode: 'a pie', stops: ['catedral', 'biblioteca', 'parque'] },
     { id: 'cultura', name: 'Arte y cultura', cat: 'cultural', mode: 'a pie', stops: ['torre', 'quinta', 'zulima', 'biblioteca'] },
@@ -244,5 +313,45 @@ window.RT_DATA = (function () {
     radiusKm: 30
   };
 
-  return { CATEGORIES: CATEGORIES, PLACES: PLACES, DISHES: DISHES, STAMPS: STAMPS, ROUTES: ROUTES, LINES: LINES, FALLBACK_SERVICES: FALLBACK_SERVICES, CITY: CITY };
+  /* Seguridad (SRS v1): zona por lugar y reglas. Colores del SRS solo como relleno del mapa;
+     para texto se usan tonos con contraste suficiente y siempre ícono + palabra. */
+  var SAFETY = {
+    zones: {
+      verde: { label: 'Zona verde', word: 'Segura', fill: '#1E8449', ink: '#FFFFFF', map: '#2ECC71', icon: 'shield' },
+      amarilla: { label: 'Zona amarilla', word: 'Precaución', fill: '#F1C40F', ink: '#1C1917', map: '#F1C40F', icon: 'alert' },
+      roja: { label: 'Zona roja', word: 'Restringida', fill: '#C0392B', ink: '#FFFFFF', map: '#E74C3C', icon: 'ban' }
+    },
+    // [zona, noche, consejo]. noche: 'si' (día y noche), 'dia' (de día), 'no' (solo de día: alerta de noche), 'eventos'
+    places: {
+      gobernacion: ['verde', 'si'], torre: ['verde', 'si'], catedral: ['verde', 'si'], parque: ['verde', 'si'],
+      columna: ['amarilla', 'no', 'Solo de día, en grupo o en carro.'], cristo: ['amarilla', 'no', 'Solo de día y en carro.'],
+      biblioteca: ['verde', 'dia'], quinta: ['verde', 'dia'], zulima: ['verde', 'eventos'], victoria: ['verde', 'dia'],
+      patios: ['verde', 'dia'], bagatela: ['verde', 'dia'], casa: ['verde', 'dia'], templo: ['verde', 'dia', 'Quédate dentro del parque y en las vías principales.']
+    },
+    nightFrom: 18, nightTo: 5,
+    nightAlternatives: ['zulima', 'patios'],
+    // Corredor seguro del Parque Gran Colombiano: esquema aproximado, por validar con la Alcaldía de Villa del Rosario.
+    corridor: { name: 'Parque Gran Colombiano', center: [7.8288, -72.4627], watchRadius: 2500,
+      polygon: [[7.8318, -72.4668], [7.8322, -72.4600], [7.8262, -72.4588], [7.8252, -72.4652]] }
+  };
+
+  /* Hoteles base: se sugieren por cercanía al punto de partida de la ruta. Sin calificaciones fijas. */
+  var HOTELS = [
+    { id: 'casablanca', name: 'Hotel Casa Blanca', area: 'Cúcuta centro', address: 'Av. 6 # 14-55, La Playa' },
+    { id: 'sterling', name: 'Hotel Sterling', area: 'Cúcuta centro', address: null },
+    { id: 'lequint', name: 'Hotel Le Quint', area: 'Cúcuta centro', address: null },
+    { id: 'inka', name: 'Hotel INKA', area: 'Cúcuta', address: null },
+    { id: 'granester', name: 'Hotel Gran Ester', area: 'Los Patios', address: null },
+    { id: 'villaantigua', name: 'Hotel Villa Antigua', area: 'Villa del Rosario', address: null },
+    { id: 'posadaabuelo', name: 'Posada El Abuelo', area: 'Villa del Rosario', address: null }
+  ];
+
+  /* Transporte seguro, fase 1: solo orienta. Pedir el carro dentro de la app es fase 2. */
+  var TRANSPORT = [
+    { id: 'hotel', name: 'Pídelo en tu hotel', text: 'La recepción llama un taxi formal.' },
+    { id: 'lineas', name: 'Líneas de taxi formales', text: 'Números por confirmar con la Alcaldía.' },
+    { id: 'apps', name: 'Apps de transporte', text: 'Abre la app que uses en tu celular (DiDi, InDrive, Uber).' }
+  ];
+
+  return { CATEGORIES: CATEGORIES, PLACES: PLACES, DISHES: DISHES, STAMPS: STAMPS, ROUTES: ROUTES, LINES: LINES, FALLBACK_SERVICES: FALLBACK_SERVICES, CITY: CITY, SAFETY: SAFETY, HOTELS: HOTELS, TRANSPORT: TRANSPORT };
 })();
