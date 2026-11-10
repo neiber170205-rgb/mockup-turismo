@@ -27,6 +27,7 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 - **Transporte seguro** (fase 1): orienta a hotel, taxis formales y apps. Pedir el carro dentro de la app es fase 2.
 - **Sin internet**: la app, las fichas y las fotos quedan guardadas; el mapa muestra lo que ya viste.
 - En el panel del computador: **Simular de noche** y **Probar frontera**.
+- **Voz más natural**: Toche elige la voz en español más real del equipo (las «natural» de Edge/Windows, Google, Paulina o Mónica en iPhone) y descarta las voces de fantasía. En Accesibilidad puedes elegir otra voz.
 - **Toche animado**: el toche real (*Icterus chrysater*), hecho solo con código. Respira, parpadea, mueve la cabeza a saltos, busca con el pico, sacude la cola y mueve el pico cuando la app habla.
   - Bienvenida: llega volando y se posa en la rama.
   - Inicio, navegación y menú de voz: su cabeza en la insignia, que habla con cada sugerencia.

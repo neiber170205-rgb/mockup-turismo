@@ -151,12 +151,31 @@
      ========================================================= */
   var synth = window.speechSynthesis || null, voiceEs = null, speakToken = 0, speakOpts = null;
   var RATE = { lenta: 0.82, normal: 1, rapida: 1.22 };
+  // Elegir la voz más natural disponible. Los celulares y computadores traen voces de fantasía
+  // (Eddy, Flo, Grandma, Rocko, Sandy, Shelley…) que suenan falsas: se descartan.
+  var NOVELTY = /eddy|flo\b|grandma|grandpa|abuel|reed|rocko|sandy|shelley|albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|junior|kathy|ralph|fred|eloquence|espeak/i;
+  var NATURAL = /natural|neural|online|premium|enhanced|mejorad|siri|wavenet|studio/i;
+  var GOOD = /paulina|m[oó]nica|juan|jorge|diego|isabela|salom[eé]|gonzalo|dalia|elvira|alvaro|marisol|camila|sabina|helena|laura|pablo|google/i;
+  function voiceScore(v) {
+    var sc = 0, lang = (v.lang || '').replace('_', '-');
+    if (!/^es/i.test(lang)) return -1;
+    if (NOVELTY.test(v.name)) return 0;
+    if (/^es-CO/i.test(lang)) sc += 40; else if (/^es-(419|MX|US)/i.test(lang)) sc += 30; else if (/^es-(AR|CL|PE|VE|EC)/i.test(lang)) sc += 25; else sc += 10;
+    if (NATURAL.test(v.name)) sc += 50;
+    if (GOOD.test(v.name)) sc += 20;
+    if (v.localService === false) sc += 5; // voces en línea suelen ser más naturales
+    return sc;
+  }
+  function esVoices() {
+    if (!synth) return [];
+    return (synth.getVoices() || []).filter(function (v) { return voiceScore(v) > 0; })
+      .sort(function (a, b) { return voiceScore(b) - voiceScore(a); });
+  }
   function pickVoice() {
     if (!synth) return;
-    var vs = synth.getVoices() || [];
-    voiceEs = vs.filter(function (v) { return /^es[-_]CO/i.test(v.lang); })[0] ||
-      vs.filter(function (v) { return /^es[-_](419|MX|US|AR|CL|PE)/i.test(v.lang); })[0] ||
-      vs.filter(function (v) { return /^es/i.test(v.lang); })[0] || null;
+    var vs = esVoices();
+    voiceEs = (S.voiceURI && vs.filter(function (v) { return v.voiceURI === S.voiceURI; })[0]) || vs[0] || null;
+    if (typeof renderVoicePicker === 'function') renderVoicePicker();
   }
   if (synth) { pickVoice(); try { synth.addEventListener('voiceschanged', pickVoice); } catch (e) { synth.onvoiceschanged = pickVoice; } }
   function splitSentences(text) {
@@ -193,6 +212,7 @@
       u.lang = voiceEs ? voiceEs.lang : 'es-CO';
       if (voiceEs) u.voice = voiceEs;
       u.rate = RATE[S.vel] || 1;
+      u.pitch = 1; u.volume = 1;
       u.onend = function () { if (my !== speakToken) return; i++; if (opts.onprogress) opts.onprogress(i, parts.length); next(); };
       u.onerror = function () { if (my !== speakToken) return; i++; next(); };
       try { synth.speak(u); } catch (e) { finish(); }
@@ -2139,6 +2159,22 @@
   });
   $('#seg-vel').addEventListener('click', function (e) { var b = e.target.closest('[data-vel]'); if (!b) return; S.vel = b.getAttribute('data-vel'); save(); syncSettingsUI(); speak('Así hablo a velocidad ' + b.textContent.toLowerCase() + '.', { force: true }); });
   $('#btn-test-voice').addEventListener('click', function () { speak('¡Hola! Soy Toche, tu guía en Cúcuta. Te acompaño en cada ruta.', { force: true }); });
+  function renderVoicePicker() {
+    var box = $('#voice-list'); if (!box) return;
+    var vs = esVoices().slice(0, 8);
+    if (!vs.length) { box.innerHTML = '<p class="t-note left">Este navegador no trae voces en español. Prueba con Chrome, Edge o Safari.</p>'; return; }
+    box.innerHTML = vs.map(function (v) {
+      var on = voiceEs && v.voiceURI === voiceEs.voiceURI;
+      var nice = v.name.replace(/Microsoft |Google | Online \(Natural\)| - Spanish.*$|\(.*\)/g, '').trim() || v.name;
+      return '<button type="button" class="voice-opt" role="radio" aria-checked="' + on + '" data-voice="' + esc(v.voiceURI) + '"><span class="grow"><b>' + esc(nice) + '</b><small>' + esc(v.lang) + (NATURAL.test(v.name) ? ' · natural' : '') + '</small></span>' + ic(on ? 'check' : 'vol') + '</button>';
+    }).join('');
+  }
+  $('#voice-list').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-voice]'); if (!b) return;
+    S.voiceURI = b.getAttribute('data-voice'); save(); pickVoice();
+    speak('Hola, soy Toche. Así suena esta voz.', { force: true });
+  });
+  renderVoicePicker();
   onEnter.accesibilidad = syncSettingsUI;
 
   /* =========================================================

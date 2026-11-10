@@ -875,3 +875,10 @@ h2.section-head{margin:22px 20px 4px}
 .m-alt b{display:block;font-size:16px}.m-alt small{color:#57534E}
 .alert-red .m-head{color:#C0392B}
 .app[data-contrast="on"] .zbadge{outline:2px solid #fff}
+
+.voice-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.voice-opt{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 12px;border:2px solid transparent;border-radius:16px;background:#F6F5F2;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.voice-opt[aria-checked="true"]{border-color:#1C1917;background:#fff}
+.voice-opt small{display:block;color:#57534E;font-size:12px}
+.app[data-contrast="on"] .voice-opt{background:#1C1C1E;color:#fff}
+.app[data-contrast="on"] .voice-opt[aria-checked="true"]{border-color:#FFD60A}
