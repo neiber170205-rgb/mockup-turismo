@@ -82,6 +82,26 @@ Los 10 sitios del avance de investigación, más Corredor de Los Patios, La Baga
 | Obelisco de la Loma de Bolívar | EEIM | 2016 | CC BY-SA 4.0 (Wikimedia Commons) |
 | Monumento a la Batalla de Cúcuta | Autor desconocido | c. 1910 | Dominio público (Wikimedia Commons) |
 
+## Datos de prueba
+
+El prototipo es solo de prueba. Estos datos son de relleno y están marcados «prueba» en `js/data.js`:
+
+- Direcciones, teléfonos y ubicación de los hoteles (salvo la dirección del Hotel Casa Blanca).
+- Teléfonos de las líneas de taxi formales.
+- El polígono del corredor seguro del Parque Gran Colombiano.
+- Ubicación aproximada de La Bagatela, Casa Natal y el Corredor de Los Patios.
+
+## Para el desarrollo: todo parametrizable
+
+Nada de esto debe quedar quemado en el código; debe venir de un catálogo o panel de administración:
+
+- Lugares: coordenadas, altitud, categoría, zona, horario, restricción nocturna, historia, fuentes, fotos y créditos.
+- Zonas de seguridad: colores, íconos, textos, polígonos y radios de alerta.
+- Reglas: horario de noche (hoy 18:00–5:00), lugares solo de día, alternativas, radio de llegada.
+- Rutas por tiempo y por tema: paradas, orden, horas sugeridas, modo y días.
+- Hoteles, transporte seguro, líneas de emergencia, estampas y platos.
+- Textos y voz de Toche, accesibilidad y proveedor de mapas.
+
 ## Archivos
 
 ```

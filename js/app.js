@@ -1195,6 +1195,7 @@
     var a = b.getAttribute('data-act');
     if (a === 'close') closeRouteOverview();
     else if (a === 'transporte') openTransport();
+    else if (a === 'hotel') { var ho = byId(HOTELS, b.getAttribute('data-id')); if (ho) startNav({ id: 'hotel-' + ho.id, type: 'search', name: ho.name, coords: ho.coords, sub: ho.area }); }
     else if (a === 'start') {
       var next = r.stops.map(place).filter(function (p) { return p && p.coords && !hasStamp(p.id); })[0] || r.stops.map(place).filter(function (p) { return p && p.coords; })[0];
       if (!next) { toast('Las paradas de esta ruta aún no tienen ubicación'); return; }
@@ -1629,7 +1630,8 @@
     openModal('<div class="m-head"><span class="m-ic" style="--t:#FEF6D8;--c:#1C1917">' + ic('taxi') + '</span><h2 class="t-h2" id="modal-title" tabindex="-1">Transporte seguro</h2></div>' +
       '<p class="m-text">De noche o entre municipios, pide el carro desde un lugar formal: tu hotel, un restaurante o un centro comercial.</p>' +
       '<div class="m-list">' + TRANSPORT.map(function (t) {
-        return '<div class="m-item"><span class="m-ic" style="--t:#F6F5F2;--c:#1C1917">' + ic(t.id === 'hotel' ? 'bed' : (t.id === 'apps' ? 'phone' : 'taxi')) + '</span><span class="grow"><b>' + esc(t.name) + '</b><small>' + esc(t.text) + '</small></span></div>';
+        return '<div class="m-item"><span class="m-ic" style="--t:#F6F5F2;--c:#1C1917">' + ic(t.id === 'hotel' ? 'bed' : (t.id === 'apps' ? 'phone' : 'taxi')) + '</span><span class="grow"><b>' + esc(t.name) + '</b><small>' + esc(t.text) + '</small></span></div>' +
+          (t.lines ? t.lines.map(function (l) { return '<a class="m-item" href="tel:' + l.phone + '"><span class="m-ic" style="--t:#FEF6D8;--c:#1C1917">' + ic('phone') + '</span><span class="grow"><b>' + esc(l.name) + '</b><small>' + l.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2 $3') + '</small></span></a>'; }).join('') : '');
       }).join('') + '</div>' +
       '<p class="t-note left">Fase 1: la app te orienta. Pedir el carro dentro de la app llega en la fase 2. Emergencias: 123.</p>' +
       '<div class="m-actions"><a class="btn btn-ghost btn-block" href="tel:123">' + ic('phone') + 'Llamar al 123</a></div>');
@@ -1666,7 +1668,9 @@
     if (!r.hotels) return '';
     return '<div class="rc-hotels"><span class="rc-day">Hotel base sugerido · por cercanía</span>' + r.hotels.map(function (hid) {
       var ho = byId(HOTELS, hid); if (!ho) return '';
-      return '<span class="rc-hotel">' + ic('bed') + '<span><b>' + esc(ho.name) + '</b><small>' + esc(ho.area + ' · ' + (ho.address || 'dirección por confirmar')) + '</small></span></span>';
+      return '<span class="rc-hotel">' + ic('bed') + '<span class="grow"><b>' + esc(ho.name) + '</b><small>' + esc(ho.area + ' · ' + (ho.address || 'dirección por confirmar')) + (ho.prueba ? ' · dato de prueba' : '') + '</small></span>' +
+        (ho.coords ? '<button type="button" class="btn btn-soft btn-sm" data-act="hotel" data-id="' + ho.id + '" aria-label="Cómo llegar a ' + esc(ho.name) + '">' + ic('nav') + '</button>' : '') +
+        (ho.phone ? '<a class="btn btn-soft btn-sm" href="tel:' + ho.phone + '" aria-label="Llamar a ' + esc(ho.name) + '">' + ic('phone') + '</a>' : '') + '</span>';
     }).join('') + '</div>';
   }
 

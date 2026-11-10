@@ -335,21 +335,27 @@ window.RT_DATA = (function () {
       polygon: [[7.8318, -72.4668], [7.8322, -72.4600], [7.8262, -72.4588], [7.8252, -72.4652]] }
   };
 
-  /* Hoteles base: se sugieren por cercanía al punto de partida de la ruta. Sin calificaciones fijas. */
+  /* Hoteles base: se sugieren por cercanía al punto de partida de la ruta. Sin calificaciones fijas.
+     DATOS DE PRUEBA (prueba: true): direcciones, teléfonos y coordenadas son de relleno, salvo la dirección del Casa Blanca.
+     En el desarrollo todo esto debe venir de un catálogo parametrizable. */
   var HOTELS = [
-    { id: 'casablanca', name: 'Hotel Casa Blanca', area: 'Cúcuta centro', address: 'Av. 6 # 14-55, La Playa' },
-    { id: 'sterling', name: 'Hotel Sterling', area: 'Cúcuta centro', address: null },
-    { id: 'lequint', name: 'Hotel Le Quint', area: 'Cúcuta centro', address: null },
-    { id: 'inka', name: 'Hotel INKA', area: 'Cúcuta', address: null },
-    { id: 'granester', name: 'Hotel Gran Ester', area: 'Los Patios', address: null },
-    { id: 'villaantigua', name: 'Hotel Villa Antigua', area: 'Villa del Rosario', address: null },
-    { id: 'posadaabuelo', name: 'Posada El Abuelo', area: 'Villa del Rosario', address: null }
+    { id: 'casablanca', name: 'Hotel Casa Blanca', area: 'Cúcuta centro', address: 'Av. 6 # 14-55, La Playa', phone: '6070000001', coords: [7.88267, -72.50414], prueba: true },
+    { id: 'sterling', name: 'Hotel Sterling', area: 'Cúcuta centro', address: 'Calle 10 # 4-00 (prueba)', phone: '6070000002', coords: [7.88580, -72.50300], prueba: true },
+    { id: 'lequint', name: 'Hotel Le Quint', area: 'Cúcuta centro', address: 'Av. 0 # 11-00 (prueba)', phone: '6070000003', coords: [7.88800, -72.50050], prueba: true },
+    { id: 'inka', name: 'Hotel INKA', area: 'Cúcuta', address: 'Av. 1E # 12-00 (prueba)', phone: '6070000004', coords: [7.88900, -72.49900], prueba: true },
+    { id: 'granester', name: 'Hotel Gran Ester', area: 'Los Patios', address: 'Autopista Los Patios km 1 (prueba)', phone: '6070000005', coords: [7.83700, -72.51000], prueba: true },
+    { id: 'villaantigua', name: 'Hotel Villa Antigua', area: 'Villa del Rosario', address: 'Calle 5 # 6-00 (prueba)', phone: '6070000006', coords: [7.83300, -72.47000], prueba: true },
+    { id: 'posadaabuelo', name: 'Posada El Abuelo', area: 'Villa del Rosario', address: 'Calle 7 # 5-00 (prueba)', phone: '6070000007', coords: [7.83000, -72.46800], prueba: true }
   ];
 
   /* Transporte seguro, fase 1: solo orienta. Pedir el carro dentro de la app es fase 2. */
   var TRANSPORT = [
     { id: 'hotel', name: 'Pídelo en tu hotel', text: 'La recepción llama un taxi formal.' },
-    { id: 'lineas', name: 'Líneas de taxi formales', text: 'Números por confirmar con la Alcaldía.' },
+    { id: 'lineas', name: 'Líneas de taxi formales', text: 'Teléfonos de prueba hasta confirmarlos con la Alcaldía.', lines: [
+      { name: 'Taxi formal Cúcuta (prueba)', phone: '6070000101' },
+      { name: 'Taxi formal Villa del Rosario (prueba)', phone: '6070000102' },
+      { name: 'Taxi formal Los Patios (prueba)', phone: '6070000103' }
+    ], prueba: true },
     { id: 'apps', name: 'Apps de transporte', text: 'Abre la app que uses en tu celular (DiDi, InDrive, Uber).' }
   ];
 

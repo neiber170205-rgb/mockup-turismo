@@ -1,7 +1,7 @@
 /* Ruta Toche · funciona sin internet (RNF-03).
    App, fichas y fotos: se guardan al instalar. Teselas del mapa: solo las que ya viste (sin descarga masiva). */
-var V = 'rt-v2.4';
-var SHELL = ['./', 'index.html', 'css/app.css?v=2.4', 'js/data.js?v=2.4', 'js/art.js?v=2.4', 'js/toche.js?v=2.4', 'js/app.js?v=2.4',
+var V = 'rt-v2.5';
+var SHELL = ['./', 'index.html', 'css/app.css?v=2.5', 'js/data.js?v=2.5', 'js/art.js?v=2.5', 'js/toche.js?v=2.5', 'js/app.js?v=2.5',
   'vendor/leaflet/leaflet.css', 'vendor/leaflet/leaflet.js',
   'img/parque-hoy.jpg', 'img/parque-antes.jpg', 'img/catedral-hoy.jpg', 'img/catedral-antes.jpg', 'img/biblioteca-hoy.jpg', 'img/biblioteca-antes.jpg',
   'img/columna-hoy.jpg', 'img/columna-antes.jpg', 'img/quinta-hoy.jpg', 'img/gobernacion-hoy.jpg', 'img/torre-hoy.jpg', 'img/victoria-hoy.jpg', 'img/cristo-hoy.jpg'];

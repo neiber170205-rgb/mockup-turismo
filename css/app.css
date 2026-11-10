@@ -866,7 +866,8 @@ h2.section-head{margin:22px 20px 4px}
 .dur-body small{color:var(--muted,#57534E);font-size:13px}
 .dur-badges{display:flex;flex-wrap:wrap;gap:4px}
 .rc-hotels{display:flex;flex-direction:column;gap:6px;margin-top:8px}
-.rc-hotel{display:flex;align-items:center;gap:10px;font-size:14px}
+.rc-hotel{display:flex;align-items:center;gap:8px;font-size:14px}
+.rc-hotel .btn-sm{min-width:44px;min-height:44px;padding:0 10px}
 .rc-hotel .ic{flex:none;color:#B45309}
 .rc-hotel small{display:block;color:var(--muted,#57534E);font-size:12px}
 .rc-day{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted,#57534E);margin:6px 0 0}
