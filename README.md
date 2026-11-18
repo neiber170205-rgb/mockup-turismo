@@ -125,4 +125,5 @@ Para probarlo en tu computador: `python3 -m http.server` dentro de la carpeta y 
 - Permisos para las fotos con derechos reservados.
 - Resolver los datos «por verificar» con fuentes primarias.
 - Validar el prototipo con habitantes y visitantes (objetivo 2 del anteproyecto).
+- Mejora: en cada punto, una galería de imágenes además de las fotos de antes y después (fotos y créditos parametrizables).
 - Fase 2: taxis y rutas de bus.
