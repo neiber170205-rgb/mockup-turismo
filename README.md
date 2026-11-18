@@ -25,6 +25,7 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 - **Alerta de noche**: después de las 6 p. m., Loma de Bolívar y Cristo Rey avisan y proponen planes en zona verde.
 - **Corredor seguro**: si te sales del Parque Gran Colombiano hacia la frontera, vibra, avisa por voz y te devuelve. El polígono es un esquema por validar.
 - **Transporte seguro** (fase 1): orienta a hotel, taxis formales y apps. Pedir el carro dentro de la app es fase 2.
+- **Ícono de la app**: al instalarla (escritorio, Android o iPhone con «Agregar a inicio») sale la cabeza del toche sobre fondo rojo. Archivos en `img/icons/` y `manifest.webmanifest`.
 - **Sin internet**: la app, las fichas y las fotos quedan guardadas; el mapa muestra lo que ya viste.
 - En el panel del computador: **Simular de noche** y **Probar frontera**.
 - **Voz más natural**: Toche elige la voz en español más real del equipo (las «natural» de Edge/Windows, Google, Paulina o Mónica en iPhone) y descarta las voces de fantasía. En Accesibilidad puedes elegir otra voz.
