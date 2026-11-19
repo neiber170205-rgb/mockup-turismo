@@ -359,5 +359,57 @@ window.RT_DATA = (function () {
     { id: 'apps', name: 'Apps de transporte', text: 'Abre la app que uses en tu celular (DiDi, InDrive, Uber).' }
   ];
 
-  return { CATEGORIES: CATEGORIES, PLACES: PLACES, DISHES: DISHES, STAMPS: STAMPS, ROUTES: ROUTES, LINES: LINES, FALLBACK_SERVICES: FALLBACK_SERVICES, CITY: CITY, SAFETY: SAFETY, HOTELS: HOTELS, TRANSPORT: TRANSPORT };
+  /* Galería de cada punto: solo fotos de uso libre (CC BY-SA o dominio público), del anexo del anteproyecto.
+     src sin extensión: <src>.jpg (grande) y <src>-s.jpg (miniatura). En el desarrollo debe venir del catálogo. */
+  var GALLERY = {
+    gobernacion: [
+      { src: "img/gal/gobernacion-04", alt: "Palacio de Gobierno de Norte de Santander de noche", year: "2008", author: "Jorge Andrés Paparoni Bruzual", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Palacio_de_gobierno_de_Norte_de_Santander_(Noche", w: 720, h: 540 },
+      { src: "img/gal/gobernacion-02", alt: "Edificio de la Gobernación de Norte de Santander", year: "2014", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Edificio_de_la_gobernaci%C3%B3n_de_Norte_de_Santander,_Colombia.jpg", w: 720, h: 540 },
+      { src: "img/gal/gobernacion-01", alt: "Palacio de Gobierno de Norte de Santander «Cúpula Chata», vista aérea", year: "2020", author: "Losmanesdeldrone", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Palacio_de_Gobierno_de_Norte_de_Santander_%22C%C3%BApula_Chata%22.jpg", w: 720, h: 539 },
+      { src: "img/gal/gobernacion-03", alt: "Jardín interior con palmeras del Palacio de Gobierno", year: "2022", author: "Losmanesdeldrone", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_interior_del_Palacio_de_Gobierno_de_Norte_de_Santander.jpg", w: 720, h: 479 }
+    ],
+    torre: [
+      { src: "img/gal/torre-11", alt: "La Torre del Reloj desde la calle 13", year: "2014", author: "Ruben Valero", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:La_Torre_del_Reloj.JPG", w: 640, h: 960 },
+      { src: "img/gal/torre-10", alt: "Torre del Reloj de Cúcuta", year: "2018", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Torre_del_Reloj_C%C3%BAcuta_NS.jpg", w: 720, h: 540 }
+    ],
+    catedral: [
+      { src: "img/gal/catedral-16", alt: "Iglesia de San José antes del terremoto (1874)", year: "1874", author: "Autor desconocido", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Iglesia_San_Jos%C3%A9_1874.PNG", w: 600, h: 376 },
+      { src: "img/gal/catedral-17", alt: "Ruinas de Cúcuta tras el terremoto del 18 de mayo de 1875", year: "1875", author: "Autor desconocido", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Terremoto_de_C%C3%BAcuta_18_mayo_1875.PNG", w: 600, h: 383 },
+      { src: "img/gal/catedral-20", alt: "Iglesia principal de Cúcuta antes del terremoto de 1875", year: "ca. 1875", author: "Autor desconocido", lic: "Dominio público", from: "Banco de la República", url: "https://babel.banrepcultural.org/digital/collection/p17054coll16/id/313", w: 800, h: 565 },
+      { src: "img/gal/catedral-25", alt: "Plaza de la iglesia en la «nueva Cúcuta» (c. 1883)", year: "ca. 1883", author: "Autor desconocido", lic: "Dominio público", from: "Banco de la República", url: "https://babel.banrepcultural.org/digital/collection/p17054coll16/id/315", w: 800, h: 603 },
+      { src: "img/gal/catedral-18", alt: "La iglesia de San José en 1897, en reconstrucción", year: "1897", author: "Cjm1991", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Catedral1897.jpg", w: 448, h: 272 },
+      { src: "img/gal/catedral-19", alt: "Interior de la Catedral de San José", year: "2016", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Catedral_de_C%C3%BAcuta_(por_dentro", w: 720, h: 540 },
+      { src: "img/gal/catedral-15", alt: "Catedral de San José de Cúcuta, fachada", year: "2021", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Catedral_C%C3%BAcuta_julio_2021.jpg", w: 720, h: 601 }
+    ],
+    biblioteca: [
+      { src: "img/gal/biblioteca-30", alt: "Hospital San Juan de Dios de Cúcuta (c. 1910), hoy sede de la biblioteca", year: "ca. 1910", author: "Autor desconocido", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Hospital_San_Juan_de_Dios._1910.jpg", w: 450, h: 285 },
+      { src: "img/gal/biblioteca-29", alt: "Biblioteca Pública Julio Pérez Ferrero", year: "2014", author: "Ruben Valero", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Biblioteca_P%C3%BAblica_Julio_P%C3%A9rez_Ferrero.JPG", w: 720, h: 445 },
+      { src: "img/gal/biblioteca-31", alt: "Entrada de la Biblioteca Pública de Cúcuta", year: "2015", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Entrada_Biblioteca_P%C3%BAblica_de_C%C3%BAcuta.JPG", w: 720, h: 465 }
+    ],
+    quinta: [
+      { src: "img/gal/quinta-37", alt: "La Quinta Teresa abandonada, antes de la restauración (2012)", year: "2012", author: "Isabell 0621", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Panor%C3%A1mica_Quinta_Teresa,_actualmente_abandonada..JPG", w: 720, h: 158 },
+      { src: "img/gal/quinta-38", alt: "Interior de la Quinta Teresa", year: "2016", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Casa_Quinta_Teresa_por_dentro.jpeg", w: 720, h: 540 },
+      { src: "img/gal/quinta-36", alt: "Centro Cultural Quinta Teresa (restaurada)", year: "2017", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:QT_C%C3%BAcuta_Col.jpg", w: 720, h: 405 }
+    ],
+    parque: [
+      { src: "img/gal/parque-43", alt: "Plano topográfico de San José de Cúcuta (1863), antes del terremoto", year: "1863", author: "José Miguel Crespo", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Plano_Cucuta_antes_terremoto_1863.jpg", w: 720, h: 906 },
+      { src: "img/gal/parque-42", alt: "Estatua de Santander en el Parque Central de Cúcuta (1893)", year: "1893", author: "Autor desconocido", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Estatua_de_Francisco_de_Paula_Santander_en_el_Parque_Central_de_C%C3%BAcuta_(1893", w: 720, h: 494 },
+      { src: "img/gal/parque-41", alt: "Parque Santander de Cúcuta", year: "2014", author: "Ruben Valero", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Parque_Santander_C%C3%BAcuta.JPG", w: 720, h: 465 }
+    ],
+    victoria: [
+      { src: "img/gal/victoria-51", alt: "Columna y estatua de La Victoria (1919)", year: "2015", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Estatua_La_Victoria_PC_,_C%C3%BAcuta_NS.jpg", w: 720, h: 540 },
+      { src: "img/gal/victoria-50", alt: "Parque La Victoria (Parque Colón)", year: "2021", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Pq_La_Victoria_C%C3%BAcuta_jul_2021.jpg", w: 720, h: 960 }
+    ],
+    cristo: [
+      { src: "img/gal/cristo-55", alt: "Monumento a Cristo Rey, Cúcuta", year: "2014", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Cristo_Rey,_C%C3%BAcuta_NS.jpg", w: 720, h: 540 },
+      { src: "img/gal/cristo-56", alt: "Monumento a Cristo Rey, vista frontal", year: "2014", author: "Ruben Valero", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Cristo_Rey,_C%C3%BAcuta.JPG", w: 607, h: 960 },
+      { src: "img/gal/cristo-57", alt: "Cúcuta vista desde el mirador de Cristo Rey", year: "2016", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:C%C3%BAcuta_desde_Cristo_Rey.jpeg", w: 720, h: 540 }
+    ],
+    columna: [
+      { src: "img/gal/columna-61", alt: "Monumento a la Batalla de Cúcuta (c. 1910)", year: "ca. 1910", author: "Autor desconocido", lic: "Dominio público", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Monumento_a_la_Batalla_de_C%C3%BAcuta.jpg", w: 450, h: 233 },
+      { src: "img/gal/columna-62", alt: "Obelisco de la Loma de Bolívar", year: "2016", author: "EEIM", lic: "CC BY-SA", from: "Wikimedia Commons", url: "https://commons.wikimedia.org/wiki/File:Obelisco_Loma_de_Bol%C3%ADvar,_C%C3%BAcuta.JPG", w: 720, h: 540 }
+    ]
+  };
+
+  return { CATEGORIES: CATEGORIES, PLACES: PLACES, DISHES: DISHES, STAMPS: STAMPS, ROUTES: ROUTES, LINES: LINES, FALLBACK_SERVICES: FALLBACK_SERVICES, CITY: CITY, SAFETY: SAFETY, HOTELS: HOTELS, TRANSPORT: TRANSPORT, GALLERY: GALLERY };
 })();

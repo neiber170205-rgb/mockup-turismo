@@ -13,6 +13,7 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 - **Cómo llegar**: rutas reales a pie (o en carro si el lugar está lejos), con indicaciones en español, voz de Toche, recálculo si te sales de la ruta y aviso al llegar.
 - **Simular recorrido**: Toche camina la ruta por ti, para probar la llegada desde cualquier lugar.
 - **Llegada a un punto turístico**: cuando estás a pocos metros, vibra, Toche lo anuncia y se abre su historia con el comparador antes/hoy.
+- **Galería de fotos** en cada punto, debajo del antes/hoy: carrusel de miniaturas con el año y visor a pantalla completa (deslizar, botones Anterior/Siguiente, flechas del teclado, contador «3 de 7», descripción en voz y crédito con enlace). 29 fotos de uso libre (CC BY-SA y dominio público) del anexo del anteproyecto, en `img/gal/`.
 - **Estampas**: en el punto (o con un plato típico) te tomas una foto y ganas la estampa. Se guardan en el navegador.
 - **Rutas** por tipo de turismo, con paradas numeradas en el mapa y progreso.
 - **Comida**: restaurantes cercanos tomados de OpenStreetMap.
@@ -98,6 +99,7 @@ El prototipo es solo de prueba. Estos datos son de relleno y están marcados «p
 Nada de esto debe quedar quemado en el código; debe venir de un catálogo o panel de administración:
 
 - Lugares: coordenadas, altitud, categoría, zona, horario, restricción nocturna, historia, fuentes, fotos y créditos.
+- Galería: fotos de cada lugar con descripción, año, autor, licencia, enlace a la fuente y orden.
 - Zonas de seguridad: colores, íconos, textos, polígonos y radios de alerta.
 - Reglas: horario de noche (hoy 18:00–5:00), lugares solo de día, alternativas, radio de llegada.
 - Rutas por tiempo y por tema: paradas, orden, horas sugeridas, modo y días.
@@ -125,5 +127,4 @@ Para probarlo en tu computador: `python3 -m http.server` dentro de la carpeta y 
 - Permisos para las fotos con derechos reservados.
 - Resolver los datos «por verificar» con fuentes primarias.
 - Validar el prototipo con habitantes y visitantes (objetivo 2 del anteproyecto).
-- Mejora: en cada punto, una galería de imágenes además de las fotos de antes y después (fotos y créditos parametrizables).
 - Fase 2: taxis y rutas de bus.

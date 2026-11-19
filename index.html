@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="css/app.css?v=2.8">
+<link rel="stylesheet" href="css/app.css?v=2.9">
 </head>
 <body>
 
@@ -62,6 +62,7 @@
     <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M4 8.5l8 1.5 8-1.5"/><path d="M12 10v5l-3 6"/><path d="M12 15l3 6"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></symbol>
@@ -333,6 +334,11 @@
               <button type="button" data-v="50" aria-pressed="true">Comparar</button>
               <button type="button" data-v="0" aria-pressed="false">Hoy</button>
             </div>
+            <section class="gal-sec" id="p-gal" aria-labelledby="gal-t">
+              <div class="row-between"><h2 class="t-h3" id="gal-t">Galería</h2><span class="small muted" id="gal-n"></span></div>
+              <ul class="gal-strip" id="gal-strip" role="list"></ul>
+              <p class="gal-empty small muted" id="gal-empty" hidden>Todavía no hay fotos de uso libre de este lugar. Las del archivo histórico necesitan permiso.</p>
+            </section>
             <section class="audio-card" id="p-audio" aria-label="Historia narrada">
               <button type="button" class="audio-play" id="p-play" aria-label="Escuchar la historia"><svg class="ic"><use href="#i-play"/></svg></button>
               <div class="grow">
@@ -441,6 +447,24 @@
         <button type="button" class="tab" data-tab="ayuda"><span class="tab-ic"><svg class="ic"><use href="#i-help"/></svg></span>Ayuda</button>
       </nav>
 
+      <!-- Galería en pantalla completa -->
+      <div class="overlay gal-viewer" id="gal-viewer" role="dialog" aria-modal="true" aria-labelledby="gv-title" hidden>
+        <div class="gv-top">
+          <button type="button" class="icon-btn glass-dark" aria-label="Cerrar galería" id="gv-close" data-autofocus><svg class="ic"><use href="#i-x"/></svg></button>
+          <span class="gv-count" id="gv-count" aria-live="polite"></span>
+          <button type="button" class="icon-btn glass-dark" aria-label="Escuchar la descripción de la foto" id="gv-say"><svg class="ic"><use href="#i-vol"/></svg></button>
+        </div>
+        <div class="gv-stage" id="gv-stage"><img id="gv-img" alt=""></div>
+        <div class="gv-bottom">
+          <h2 class="gv-title" id="gv-title" tabindex="-1"></h2>
+          <p class="gv-meta" id="gv-meta"></p>
+          <div class="gv-nav">
+            <button type="button" class="btn gv-btn" id="gv-prev"><svg class="ic"><use href="#i-chev-l"/></svg>Anterior</button>
+            <button type="button" class="btn gv-btn" id="gv-next">Siguiente<svg class="ic"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+      </div>
+
       <!-- Cámara -->
       <div class="overlay camera" id="camera" role="dialog" aria-modal="true" aria-label="Cámara" hidden>
         <video id="cam-video" playsinline muted></video>
@@ -490,9 +514,9 @@
 </div>
 
 <script src="vendor/leaflet/leaflet.js"></script>
-<script src="js/data.js?v=2.8"></script>
-<script src="js/art.js?v=2.8"></script>
-<script src="js/toche.js?v=2.8"></script>
-<script src="js/app.js?v=2.8"></script>
+<script src="js/data.js?v=2.9"></script>
+<script src="js/art.js?v=2.9"></script>
+<script src="js/toche.js?v=2.9"></script>
+<script src="js/app.js?v=2.9"></script>
 </body>
 </html>

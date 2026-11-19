@@ -1,7 +1,7 @@
 /* Ruta Toche · funciona sin internet (RNF-03).
    App, fichas y fotos: se guardan al instalar. Teselas del mapa: solo las que ya viste (sin descarga masiva). */
-var V = 'rt-v2.8';
-var SHELL = ['./', 'index.html', 'manifest.webmanifest', 'img/icons/icon-192.png', 'img/icons/icon-512.png', 'img/icons/maskable-512.png', 'img/icons/apple-touch-icon.png', 'img/icons/favicon.svg', 'css/app.css?v=2.8', 'js/data.js?v=2.8', 'js/art.js?v=2.8', 'js/toche.js?v=2.8', 'js/app.js?v=2.8',
+var V = 'rt-v2.9';
+var SHELL = ['./', 'index.html', 'manifest.webmanifest', 'img/icons/icon-192.png', 'img/icons/icon-512.png', 'img/icons/maskable-512.png', 'img/icons/apple-touch-icon.png', 'img/icons/favicon.svg', 'css/app.css?v=2.9', 'js/data.js?v=2.9', 'js/art.js?v=2.9', 'js/toche.js?v=2.9', 'js/app.js?v=2.9',
   'vendor/leaflet/leaflet.css', 'vendor/leaflet/leaflet.js',
   'img/parque-hoy.jpg', 'img/parque-antes.jpg', 'img/catedral-hoy.jpg', 'img/catedral-antes.jpg', 'img/biblioteca-hoy.jpg', 'img/biblioteca-antes.jpg',
   'img/columna-hoy.jpg', 'img/columna-antes.jpg', 'img/quinta-hoy.jpg', 'img/gobernacion-hoy.jpg', 'img/torre-hoy.jpg', 'img/victoria-hoy.jpg', 'img/cristo-hoy.jpg'];

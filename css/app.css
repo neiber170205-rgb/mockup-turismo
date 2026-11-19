@@ -882,3 +882,30 @@ h2.section-head{margin:22px 20px 4px}
 .voice-opt small{display:block;color:#57534E;font-size:12px}
 .app[data-contrast="on"] .voice-opt{background:#1C1C1E;color:#fff}
 .app[data-contrast="on"] .voice-opt[aria-checked="true"]{border-color:#FFD60A}
+
+/* Galería del punto */
+.gal-sec{display:flex;flex-direction:column;gap:10px}
+.gal-strip{list-style:none;margin:0 -20px;padding:2px 20px 6px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 20px;scrollbar-width:none}
+.gal-strip::-webkit-scrollbar{display:none}
+.gal-strip li{flex:none;scroll-snap-align:start}
+.gal-item{position:relative;display:block;width:132px;height:99px;border-radius:16px;overflow:hidden;background:var(--track);padding:0}
+.gal-item img{display:block;width:100%;height:100%;object-fit:cover}
+.gal-item:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.gal-year{position:absolute;left:6px;bottom:6px;padding:3px 8px;border-radius:10px;background:rgba(28,25,23,.78);color:#fff;font-size:.75rem;font-weight:800;line-height:1.2}
+.gal-viewer{background:#0E0C0B;color:#fff;display:flex;flex-direction:column;animation:fadeIn .2s}
+.gv-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(var(--sat) + 4px) 16px 8px}
+.gv-count{font-weight:800;font-size:1rem}
+.gv-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:0 8px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.gv-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;transition:opacity .2s}
+.gv-stage img.loading{opacity:.25}
+.gv-bottom{padding:12px 20px calc(var(--sab) + 16px);display:flex;flex-direction:column;gap:6px}
+.gv-title{font-size:1.125rem;font-weight:800;line-height:1.3;outline:none}
+.gv-meta{color:#D6D3D1;font-size:.875rem;line-height:1.4}
+.gv-meta a{color:#fff;text-decoration:underline}
+.gv-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.gv-btn{background:#fff;color:var(--ink);min-height:52px}
+.gv-btn:disabled{opacity:.35}
+.app[data-contrast="on"] .gal-item{border:3px solid #fff}
+.app[data-contrast="on"] .gal-year{background:#000;border:1px solid #fff}
+.app[data-contrast="on"] .gv-btn{background:#FFD60A;color:#000}
+@media (prefers-reduced-motion:reduce){.gal-viewer{animation:none}.gv-stage img{transition:none}}
