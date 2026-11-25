@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="css/app.css?v=2.9">
+<link rel="stylesheet" href="css/app.css?v=3.0">
 </head>
 <body>
 
@@ -100,6 +100,7 @@
       <button type="button" data-jump="rutas">Rutas</button>
       <button type="button" data-jump="punto">Punto turístico</button>
       <button type="button" data-jump="album">Pasaporte</button>
+      <button type="button" data-jump="antano">Cúcuta de antes</button>
       <button type="button" data-jump="ayuda">Emergencias</button>
       <button type="button" data-jump="accesibilidad">Accesibilidad</button>
     </div>
@@ -187,7 +188,7 @@
         </section>
 
         <!-- 2 · Inicio -->
-        <section class="screen tabs" id="s-inicio" data-say="Inicio. Toche te sugiere un lugar cercano. Abajo están el mapa, las rutas, tu pasaporte y la ayuda." aria-hidden="true">
+        <section class="screen tabs" id="s-inicio" data-say="Inicio. Toche te sugiere un lugar cercano. Abajo están el mapa, las rutas, tu pasaporte, Cúcuta de antes y la ayuda." aria-hidden="true">
           <header class="home-top">
             <button type="button" class="loc-chip" id="loc-chip">
               <svg class="ic ic-red"><use href="#i-pin"/></svg><span id="loc-text">Centro, Cúcuta</span><svg class="ic ic-sm"><use href="#i-chev-d"/></svg>
@@ -239,6 +240,11 @@
                 <span><b>Mi pasaporte</b><small id="home-count">0 de 12 estampas</small></span>
               </button>
             </div>
+            <button type="button" class="bento-help bento-antano card-lift rise" data-go="antano">
+              <span class="bento-ic sepia"><svg class="ic"><use href="#i-image"/></svg></span>
+              <span class="grow"><b>Cúcuta de antes</b><small>Fotos de la ciudad hacia 1940</small></span>
+              <svg class="ic"><use href="#i-chev-r"/></svg>
+            </button>
             <button type="button" class="bento-help card-lift rise" data-go="ayuda">
               <span class="bento-ic red"><svg class="ic"><use href="#i-help"/></svg></span>
               <span class="grow"><b>Ayuda y emergencias</b><small>Llama al 123 · hospitales · CAI</small></span>
@@ -377,6 +383,20 @@
           </button>
         </section>
 
+        <!-- Cúcuta de antes -->
+        <section class="screen tabs" id="s-antano" data-say="Cúcuta de antes. Fotos de la ciudad hacia 1940. Toca una foto para verla en grande." aria-hidden="true">
+          <header class="page-top">
+            <button type="button" class="icon-btn icon-btn-card" aria-label="Volver" data-back><svg class="ic"><use href="#i-chev-l"/></svg></button>
+            <div class="grow"><h1 class="t-h2">Cúcuta de antes</h1><p class="muted">Fotos de la ciudad hacia 1940</p></div>
+          </header>
+          <h2 class="t-h3 section-head antano-h">Lugares de la app</h2>
+          <p class="small muted antano-p">Toca una foto y luego «Ver la ficha» para ir al lugar.</p>
+          <ul class="antano-grid" id="antano-lugares" role="list"></ul>
+          <h2 class="t-h3 section-head antano-h">Otros lugares de la época</h2>
+          <ul class="antano-grid" id="antano-otros" role="list"></ul>
+          <p class="t-note left antano-p">Fotos de un álbum antiguo de la Biblioteca Julio Pérez Ferrero. El año es aproximado y los derechos están por confirmar.</p>
+        </section>
+
         <!-- 7 · Ayuda -->
         <section class="screen tabs" id="s-ayuda" data-say="Ayuda. El primer botón llama al uno dos tres, la línea única de emergencias." aria-hidden="true">
           <header class="page-top col">
@@ -458,6 +478,7 @@
         <div class="gv-bottom">
           <h2 class="gv-title" id="gv-title" tabindex="-1"></h2>
           <p class="gv-meta" id="gv-meta"></p>
+          <button type="button" class="btn gv-btn gv-go" id="gv-go" hidden><svg class="ic"><use href="#i-pin"/></svg><span id="gv-go-t">Ver la ficha</span></button>
           <div class="gv-nav">
             <button type="button" class="btn gv-btn" id="gv-prev"><svg class="ic"><use href="#i-chev-l"/></svg>Anterior</button>
             <button type="button" class="btn gv-btn" id="gv-next">Siguiente<svg class="ic"><use href="#i-chev-r"/></svg></button>
@@ -514,9 +535,9 @@
 </div>
 
 <script src="vendor/leaflet/leaflet.js"></script>
-<script src="js/data.js?v=2.9"></script>
-<script src="js/art.js?v=2.9"></script>
-<script src="js/toche.js?v=2.9"></script>
-<script src="js/app.js?v=2.9"></script>
+<script src="js/data.js?v=3.0"></script>
+<script src="js/art.js?v=3.0"></script>
+<script src="js/toche.js?v=3.0"></script>
+<script src="js/app.js?v=3.0"></script>
 </body>
 </html>

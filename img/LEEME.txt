@@ -2,3 +2,7 @@ Fotos reales de los sitios: <id>-hoy.jpg y <id>-antes.jpg.
 IDs: zulima, parque, catedral, gobernacion, torre, victoria, biblioteca, quinta, cristo, columna.
 Solo fotos de uso libre (Wikimedia Commons, CC BY-SA o dominio público). Créditos en el README.
 Faltan: foto de Teatro Zulima y fotos antiguas libres de Gobernación, Torre, Parque Colón, Quinta Teresa y Cristo Rey.
+
+Carpeta antano/ y fotos gal/*-aNN y *-antes de gobernacion, torre, quinta y victoria:
+álbum antiguo (c. 1940) de la Biblioteca Julio Pérez Ferrero, Cúcuta. Autor desconocido.
+Derechos por confirmar con la biblioteca antes de publicar la app.

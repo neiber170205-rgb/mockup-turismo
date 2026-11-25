@@ -909,3 +909,19 @@ h2.section-head{margin:22px 20px 4px}
 .app[data-contrast="on"] .gal-year{background:#000;border:1px solid #fff}
 .app[data-contrast="on"] .gv-btn{background:#FFD60A;color:#000}
 @media (prefers-reduced-motion:reduce){.gal-viewer{animation:none}.gv-stage img{transition:none}}
+
+/* Cúcuta de antes */
+.bento-antano{background:#EFE6D8}
+.bento-ic.sepia{background:#5C4A36;color:#fff}
+.antano-h{padding:0}
+.antano-p{padding:0 20px;margin:4px 0 0}
+.antano-grid{list-style:none;margin:12px 0 8px;padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+.antano-item{display:flex;flex-direction:column;gap:4px;width:100%;text-align:left;padding:0;background:none;color:inherit}
+.antano-item img{display:block;width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;border-radius:16px;background:#E6DCCB}
+.antano-item b{font-size:.9375rem;line-height:1.25;margin-top:2px}
+.antano-item small{font-size:.8125rem;color:var(--muted,#57534E)}
+.antano-item:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:16px}
+.gv-go{width:100%;margin-top:6px;background:#F5A300;color:#1C1917;justify-content:center;gap:8px}
+.app[data-contrast="on"] .bento-antano{background:#fff;color:#000}
+.app[data-contrast="on"] .antano-item img{border:3px solid #fff}
+.app[data-contrast="on"] .antano-item small{color:#fff}

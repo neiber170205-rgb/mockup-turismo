@@ -83,15 +83,15 @@
     zulima: 'Todavía no hay foto libre del teatro; se muestra una ilustración.',
     parque: 'Antes: la estatua de Santander en 1893, rodeada de árboles. Hoy: la plaza abierta con palmeras y árboles.',
     catedral: 'Antes: la iglesia de San José en 1874, de dos torres, antes del terremoto. Hoy: la fachada clara de la catedral con sus dos torres.',
-    gobernacion: 'El palacio visto desde el aire, con su cúpula achatada en la esquina.',
-    torre: 'La torre blanca del reloj sobre la calle 13, con casas de colores alrededor.',
-    victoria: 'La columna alta con la estatua de la Victoria en medio del parque.',
+    gobernacion: 'Antes: el Palacio de Gobierno hacia 1940, con su letrero sobre la entrada. Hoy: el palacio visto desde el aire, con su cúpula achatada en la esquina.',
+    torre: 'Antes: el edificio de la Energía Eléctrica hacia 1940, con la torre del reloj. Hoy: la torre blanca del reloj sobre la calle 13, con casas de colores alrededor.',
+    victoria: 'Antes: la estatua de la Victoria hacia 1940, entre palmas y árboles. Hoy: la columna alta con la estatua en medio del parque.',
     biblioteca: 'Antes: el Hospital San Juan de Dios hacia 1910. Hoy: el edificio amarillo de la biblioteca, de dos pisos.',
-    quinta: 'La casona blanca de la Quinta Teresa, con corredor de columnas y techo de teja.',
+    quinta: 'Antes: la Quinta Teresa hacia 1940, cuando era el Colegio de los Hermanos Cristianos, rodeada de palmas. Hoy: la casona blanca con corredor de columnas y techo de teja.',
     cristo: 'La estatua blanca de Cristo con los brazos abiertos sobre un pedestal.',
     columna: 'Antes: la columna en la loma hacia 1910. Hoy: la columna dorada y torcida con la ciudad al fondo.'
   };
-  var ANTES_TAG = { parque: 'Antes · 1893', catedral: 'Antes · 1874', biblioteca: 'Antes · c. 1910', columna: 'Antes · c. 1910' };
+  var ANTES_TAG = { parque: 'Antes · 1893', catedral: 'Antes · 1874', biblioteca: 'Antes · c. 1910', columna: 'Antes · c. 1910', gobernacion: 'Antes · c. 1940', torre: 'Antes · c. 1940', quinta: 'Antes · c. 1940', victoria: 'Antes · c. 1940' };
   var KEYWORDS = {
     zulima: ['teatro zulima', 'teatro', 'zulima'], parque: ['parque santander', 'parque', 'santander'], catedral: ['catedral', 'san jose'],
     gobernacion: ['gobernacion', 'cupula chata', 'palacio', 'cupula'], torre: ['torre del reloj', 'torre', 'reloj', 'casa de la cultura'],
@@ -1796,11 +1796,12 @@
 
   /* ---------- Galería del punto: carrusel + visor a pantalla completa ---------- */
   var GALLERY = D.GALLERY || {}, gal = { id: null, i: 0, list: [] };
+  function galYear(g) { var m = /\d{4}/.exec(g.year || ''); return m ? +m[0] : 9999; }
   function galDesc(g, i, n) {
     return 'Foto ' + (i + 1) + ' de ' + n + ': ' + g.alt + (g.year && g.alt.indexOf(g.year) < 0 ? ', ' + g.year : '') + '.';
   }
   function renderGallery(p) {
-    var list = GALLERY[p.id] || [], strip = $('#gal-strip');
+    var list = (GALLERY[p.id] || []).slice().sort(function (a, b) { return galYear(a) - galYear(b); }), strip = $('#gal-strip');
     gal.id = p.id; gal.list = list;
     $('#gal-n').textContent = list.length ? list.length + (list.length === 1 ? ' foto' : ' fotos') : '';
     $('#gal-empty').hidden = list.length > 0;
@@ -1822,7 +1823,10 @@
     img.alt = g.alt;
     $('#gv-count').textContent = (gal.i + 1) + ' de ' + n;
     $('#gv-title').textContent = g.alt;
-    $('#gv-meta').innerHTML = esc([g.year, g.author, g.lic].filter(Boolean).join(' · ')) + ' · <a href="' + esc(g.url) + '" target="_blank" rel="noopener">' + esc(g.from) + '</a>';
+    $('#gv-meta').innerHTML = esc([g.year, g.author, g.lic].filter(Boolean).join(' · ')) + ' · ' + (g.url ? '<a href="' + esc(g.url) + '" target="_blank" rel="noopener">' + esc(g.from) + '</a>' : esc(g.from));
+    var gp = gal.album && g.place && place(g.place);
+    $('#gv-go').hidden = !gp;
+    if (gp) $('#gv-go-t').textContent = 'Ver la ficha: ' + gp.name;
     $('#gv-prev').disabled = $('#gv-next').disabled = n < 2;
     var nx = gal.list[(gal.i + 1) % n];
     if (nx && n > 1) { var pre = new Image(); pre.src = nx.src + '.jpg'; }
@@ -1830,6 +1834,7 @@
   }
   function openGal(i) {
     if (!gal.list.length) return;
+    gal.album = false;
     openOverlay($('#gal-viewer'));
     showGal(i, true);
     vibrate(10);
@@ -1855,6 +1860,36 @@
     });
     st.addEventListener('pointercancel', function () { x0 = null; });
   })();
+
+  /* ---------- Álbum «Cúcuta de antes» ---------- */
+  var ANTANO = D.ANTANO || { lugares: [], otros: [] }, antanoDone = false;
+  function antanoTiles(list, key) {
+    return list.map(function (g, i) {
+      var sub = g.sub || g.year;
+      return '<li><button type="button" class="antano-item" data-ak="' + key + '" data-ai="' + i + '" aria-label="' + esc(g.alt + (g.sub ? '. ' + g.sub : '') + ', ' + g.year + '. Abrir en grande.') + '">' +
+        '<img src="' + esc(g.src) + '-s.jpg" alt="" loading="lazy" decoding="async" width="180" height="135">' +
+        '<b>' + esc(g.alt) + '</b><small>' + esc(sub) + '</small></button></li>';
+    }).join('');
+  }
+  onEnter.antano = function () {
+    if (antanoDone) return;
+    antanoDone = true;
+    $('#antano-lugares').innerHTML = antanoTiles(ANTANO.lugares, 'lugares');
+    $('#antano-otros').innerHTML = antanoTiles(ANTANO.otros, 'otros');
+  };
+  $('#s-antano').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ak]'); if (!b) return;
+    gal.list = ANTANO[b.getAttribute('data-ak')] || [];
+    openOverlay($('#gal-viewer'));
+    gal.album = true;
+    showGal(+b.getAttribute('data-ai'), true);
+    vibrate(10);
+  });
+  $('#gv-go').addEventListener('click', function () {
+    var g = gal.list[gal.i]; if (!g || !g.place) return;
+    closeOverlay($('#gal-viewer'));
+    openPunto(g.place);
+  });
   onEnter.punto = function (opts) {
     opts = opts || {};
     var id = opts.place || punto.id || 'parque';

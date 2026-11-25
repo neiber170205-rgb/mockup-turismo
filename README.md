@@ -14,6 +14,7 @@ Prototipo funcional (fase 1, diseño v2) de la app de turismo de Cúcuta, con To
 - **Simular recorrido**: Toche camina la ruta por ti, para probar la llegada desde cualquier lugar.
 - **Llegada a un punto turístico**: cuando estás a pocos metros, vibra, Toche lo anuncia y se abre su historia con el comparador antes/hoy.
 - **Galería de fotos** en cada punto, debajo del antes/hoy: carrusel de miniaturas con el año y visor a pantalla completa (deslizar, botones Anterior/Siguiente, flechas del teclado, contador «3 de 7», descripción en voz y crédito con enlace). 29 fotos de uso libre (CC BY-SA y dominio público) del anexo del anteproyecto, en `img/gal/`.
+- **Cúcuta de antes**: álbum de 20 fotos de la ciudad hacia 1940 (álbum antiguo de la Biblioteca Julio Pérez Ferrero). Las 10 de lugares de la app también están en su galería, y 4 son la foto «antes» del comparador (Gobernación, Torre del Reloj, Quinta Teresa y Parque La Victoria). Las otras 10 (estación del ferrocarril, capillas, teatros, bancos, Club del Comercio, estatua de Mercedes Ábrego) quedan en «Otros lugares de la época». Año aproximado; **derechos por confirmar con la biblioteca** antes de publicar la app.
 - **Estampas**: en el punto (o con un plato típico) te tomas una foto y ganas la estampa. Se guardan en el navegador.
 - **Rutas** por tipo de turismo, con paradas numeradas en el mapa y progreso.
 - **Comida**: restaurantes cercanos tomados de OpenStreetMap.
